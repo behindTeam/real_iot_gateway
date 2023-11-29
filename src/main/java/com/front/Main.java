@@ -30,7 +30,7 @@ public class Main {
                 });
 
                 while (!Thread.currentThread().interrupted()) {
-                    localClient.publish("test/"+new String(message.getPayload()).length(), message);
+                    localClient.publish("test/"+"", message);
                 }
 
                 while (!Thread.currentThread().interrupted()) {
