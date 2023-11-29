@@ -15,8 +15,8 @@ public class Main {
     public static void main(String[] args) {
         String publisherId = UUID.randomUUID().toString();
 
-        try (IMqttClient client = new MqttClient("tcp://ems.nhnacademy.com:1883", publisherId);
-                IMqttClient client2 = new MqttClient("tcp://localhost:1883", publisherId)) {
+        try (IMqttClient client = new MqttClient("tcp://localhost:1883", publisherId);
+                IMqttClient infomation = new MqttClient("tcp://ems.nhnacademy.com:1883", publisherId)) {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setAutomaticReconnect(true);
             options.setCleanSession(true);
@@ -25,88 +25,72 @@ public class Main {
             options.setKeepAliveInterval(1000);
 
             client.connect(options);
-            client2.connect(options);
+            infomation.connect(options);
 
-            MqttMessage gimozzi = new MqttMessage();
+            infomation.subscribe("application/+/device/+/event/up", (topic, msg) -> {
+                try {
+                    JSONParser parser = new JSONParser();
+                    JSONObject payload = (JSONObject) parser.parse(new String(msg.getPayload()));
 
-            client.subscribe("application/+/device/+/event/up", (topic, msg) -> {
-                gimozzi.setPayload(msg.getPayload());
+                    JSONObject deviceInfo = (JSONObject) payload.get("deviceInfo");
+                    JSONObject object = (JSONObject) payload.get("object");
 
-                System.out.println("\nMessage resevice: " + topic + "\n\n");
+                    String commonTopic = "data";
 
-            });
-
-            while (!(Thread.currentThread().isInterrupted())) {
-
-                if (gimozzi.getPayload() != null) {
-                    try {
-                        JSONParser parser = new JSONParser();
-                        JSONObject payload = (JSONObject) parser.parse(new String(gimozzi.getPayload()));
-
-                        JSONObject deviceInfo = (JSONObject) payload.get("deviceInfo");
-                        JSONObject object = (JSONObject) payload.get("object");
-
-                        String commonTopic = "data";
-                        Object senserType = object.keySet().toString().split(",");
-
-                        if (deviceInfo.toString() != null) {
-                            for (Object element : deviceInfo.keySet()) {
-                                String key = (String) element;
-                                System.out.println("@@@@@@@@@@@" + key);
-                                switch (key) {
+                    if (deviceInfo != null) {
+                        Object tag = deviceInfo.get("tags");
+                        if (tag instanceof JSONObject) {
+                            for (Object key : ((JSONObject) tag).keySet()) {
+                                switch (key.toString()) {
                                     case "site":
-                                        commonTopic += "/s/" + deviceInfo.get(key).toString();
+                                        commonTopic += "/s/" + ((JSONObject) tag).get("site");
                                         break;
                                     case "name":
-                                        commonTopic += "/n/" + deviceInfo.get(key).toString();
+                                        commonTopic += "/n/" + ((JSONObject) tag).get("name");
                                         break;
                                     case "branch":
-                                        commonTopic += "/b/" + deviceInfo.get(key).toString();
+                                        commonTopic += "/b/" + ((JSONObject) tag).get("branch");
                                         break;
                                     case "place":
-                                        commonTopic += "/p/" + deviceInfo.get(key).toString();
+                                        commonTopic += "/p/" + ((JSONObject) tag).get("place");
                                         break;
+                                    default:
                                 }
                             }
                         }
 
-                        long currentTime = new Date().getTime();
-                        JSONArray payloadArray = new JSONArray();
-
-                        if (object != null) {
-                            for (Object sensorType : object.keySet()) {
-                                JSONObject newMessage = new JSONObject();
-                                newMessage.put("topic", commonTopic + "/e/" + sensorType);
-
-                                JSONObject sensorData = new JSONObject();
-                                newMessage.put("payload", sensorData);
-                                sensorData.put("time", currentTime);
-                                sensorData.put("value", object.get(sensorType));
-
-                                payloadArray.add(newMessage);
-                            }
-                        }
-
-                        // String messageNumber = String.valueOf(System.currentTimeMillis());
-                        MqttMessage message = new MqttMessage(payloadArray.toJSONString().getBytes());
-
-                        client2.publish(commonTopic + "/e/" + "m/" + senserType, message);
-                        // client2.publish("test", gimozzi);
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+
+                    long currentTime = new Date().getTime();
+
+                    if (object != null) {
+                        for (Object sensorType : object.keySet()) {
+                            JSONObject sensorData = new JSONObject();
+                            sensorData.put("time", currentTime);
+                            sensorData.put("value", object.get(sensorType));
+
+                            JSONObject newMessage = new JSONObject();
+                            newMessage.put("payload", sensorData);
+
+                            MqttMessage message = new MqttMessage(newMessage.toJSONString().getBytes());
+                            client.publish(commonTopic + "/m/" + sensorType, message);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            }
+            });
+
             while ((!Thread.currentThread().isInterrupted())) {
                 Thread.sleep(100);
             }
 
             client.disconnect();
-            client2.disconnect();
+            infomation.disconnect();
 
-        } catch (MqttException |
-
-                InterruptedException e) {
+        } catch (MqttException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
