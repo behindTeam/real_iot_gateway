@@ -4,7 +4,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class MessegeParser {
     MqttMessage messege;
@@ -19,12 +18,29 @@ public class MessegeParser {
     }
 
     public JSONObject getDeviceInfo(){
-        JSONObject deviceInfo = (JSONObject) payload.get("deviceInfo");
-        return deviceInfo;
+        return (JSONObject) payload.get("deviceInfo");
     }
 
     public String getKey(){
-        if (getDeviceInfo() != null) {
+        Object tag = getDeviceInfo().get("tags");
+        if (tag instanceof JSONObject) {
+            for (Object key : ((JSONObject)tag).keySet()) {
+                switch (key.toString()) {
+                    case "site":
+                        System.out.println("site : " + ((JSONObject)tag).get("site"));
+                        break;
+                    case "name":
+                        System.out.println("name : " + ((JSONObject)tag).get("name"));
+                        break;
+                    case "branch":
+                        System.out.println("branch : " + ((JSONObject)tag).get("branch"));
+                        break;
+                    case "place":
+                        System.out.println("place : " + ((JSONObject)tag).get("place"));
+                        break;
+                    default:
+                }
+            }
         }
         return "tags 없음";
     }
