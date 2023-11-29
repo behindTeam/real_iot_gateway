@@ -11,6 +11,9 @@ public class MessegeParser {
     MqttMessage messege;
     JSONParser jsonParser;
     JSONObject payload;
+    MqttMessage outputmessage;
+    String topic;
+    Object sensorType;
     
 
     public MessegeParser(MqttMessage msg) throws ParseException{
@@ -27,7 +30,11 @@ public class MessegeParser {
         return (JSONObject) payload.get("object");
     }
 
-    public String getKey(){
+    public String getTopic(){
+        return topic;
+    }
+
+    public void getKey(){
         String commonTopic = "data";
         Object tag = getDeviceInfo().get("tags");
         if (tag instanceof JSONObject) {
@@ -49,25 +56,34 @@ public class MessegeParser {
                 }
             }
         }
-        return commonTopic;
+        this.topic = commonTopic;
     }
 
-    public JSONObject getPayload(){
-        long currentTime = new Date().getTime();
-        JSONArray payloadArray = new JSONArray();
+    public void setPayload(){
         if (getObject() != null) {
             for (Object sensorType : getObject().keySet()) {
-                JSONObject newMessage = new JSONObject();
-                newMessage.put("topic", getKey() + "/e/" + sensorType);
+                setSenorType(sensorType);
                 JSONObject sensorData = new JSONObject();
-                newMessage.put("payload", sensorData);
-                sensorData.put("time", currentTime);
+                sensorData.put("time", new Date().getTime());
                 sensorData.put("value", getObject().get(sensorType));
-
-                payloadArray.add(newMessage);
+                JSONObject newMessage = new JSONObject();
+                newMessage.put("payload", sensorData);
+                MqttMessage message = new MqttMessage(newMessage.toJSONString().getBytes());
+                this.outputmessage = message;
             }
         }
-        return null;
+    }
+
+    public void setSenorType(Object sensorType){
+        this.sensorType = sensorType;
+    }
+
+    public String getSensorType(){
+        return sensorType.toString();
+    }
+
+    public MqttMessage getPayload(){
+        return outputmessage;
     }
 
     public void messageParser(){

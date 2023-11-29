@@ -6,7 +6,6 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.json.simple.JSONObject;
 
 public class Main {
     public static void main(String[] args) {
@@ -26,7 +25,9 @@ public class Main {
 
                 serverClient.subscribe("application/+/device/+/+/up", (topic,msg) ->{
                     MessegeParser mp = new MessegeParser(msg);
-                    localClient.publish("test/" + mp.getKey(), message);
+                    mp.getKey();
+                    mp.setPayload();
+                    localClient.publish("test/" + mp.getTopic() + "/e/" + mp.getSensorType(), mp.getPayload());
                 });
 
                 while (!Thread.currentThread().interrupted()) {
