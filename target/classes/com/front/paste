@@ -1,0 +1,52 @@
+                    JSONParser parser = new JSONParser();
+                    JSONObject payload = (JSONObject) parser.parse(new String(msg.getPayload()));
+
+                    JSONObject deviceInfo = (JSONObject) payload.get("deviceInfo");
+                    JSONObject object = (JSONObject) payload.get("object");
+
+                    String commonTopic = "data";
+                    Object senserType = object.keySet().toString().split(",");
+
+
+                    if (deviceInfo != null) {
+                        for (Object element : deviceInfo.keySet()) {
+                            String key = (String) element;
+                            switch (key) {
+                                case "site":
+                                    commonTopic += "/s/" + deviceInfo.get(key);
+                                    break;
+                                case "name":
+                                    commonTopic += "/n/" + deviceInfo.get(key);
+                                    break;
+                                case "branch":
+                                    commonTopic += "/b/" + deviceInfo.get(key);
+                                    break;
+                                case "place":
+                                    commonTopic += "/p/" + deviceInfo.get(key);
+                                    break;
+                            }
+                        }
+                    }
+
+                    long currentTime = new Date().getTime();
+                    JSONArray payloadArray = new JSONArray();
+
+                    if (object != null) {
+                        for (Object sensorType : object.keySet()) {
+                            JSONObject newMessage = new JSONObject();
+                            newMessage.put("topic", commonTopic + "/e/" + sensorType);
+
+                            JSONObject sensorData = new JSONObject();
+                            newMessage.put("payload", sensorData);
+                            sensorData.put("time", currentTime);
+                            sensorData.put("value", object.get(sensorType));
+
+                            payloadArray.add(newMessage);
+                        }
+                    }
+
+
+                    String messageNumber = String.valueOf(System.currentTimeMillis());
+                    MqttMessage message = new MqttMessage(payloadArray.toJSONString().getBytes());
+
+                    client.publish(commonTopic + "/e/" + "m/" + senserType, message);
