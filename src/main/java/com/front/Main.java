@@ -27,25 +27,6 @@ public class Main {
                 serverClient.subscribe("application/+/device/+/+/up", (topic,msg) ->{
                     MessegeParser mp = new MessegeParser(msg);
                     message.setPayload(msg.getPayload());
-                    Object tag = mp.getDeviceInfo().get("tags");
-                    if (tag instanceof JSONObject) {
-                        for (Object key : ((JSONObject)tag).keySet()) {
-                            switch (key.toString()) {
-                                case "site":
-                                    System.out.println("site : " + ((JSONObject)tag).get("site"));
-                                    break;
-                                case "name":
-                                    System.out.println("name : " + ((JSONObject)tag).get("name"));
-                                    break;
-                                case "branch":
-                                    System.out.println("branch : " + ((JSONObject)tag).get("branch"));
-                                    break;
-                                case "place":
-                                   System.out.println("place : " + ((JSONObject)tag).get("place"));
-                                    break;
-                            }
-                        }
-                    }
                 });
 
                 while (!Thread.currentThread().interrupted()) {

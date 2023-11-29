@@ -22,27 +22,28 @@ public class MessegeParser {
     }
 
     public String getKey(){
+        String commonTopic = "data";
         Object tag = getDeviceInfo().get("tags");
         if (tag instanceof JSONObject) {
             for (Object key : ((JSONObject)tag).keySet()) {
                 switch (key.toString()) {
                     case "site":
-                        System.out.println("site : " + ((JSONObject)tag).get("site"));
+                        commonTopic += "/s/" + ((JSONObject)tag).get("site");
                         break;
                     case "name":
-                        System.out.println("name : " + ((JSONObject)tag).get("name"));
+                        commonTopic += "/n/" + ((JSONObject)tag).get("name");
                         break;
                     case "branch":
-                        System.out.println("branch : " + ((JSONObject)tag).get("branch"));
+                        commonTopic += "/b/" + ((JSONObject)tag).get("branch");
                         break;
                     case "place":
-                        System.out.println("place : " + ((JSONObject)tag).get("place"));
+                        commonTopic += "/p/" + ((JSONObject)tag).get("place");
                         break;
                     default:
                 }
             }
         }
-        return "tags 없음";
+        return commonTopic;
     }
 
     public void messageParser(){
