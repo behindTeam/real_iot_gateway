@@ -26,12 +26,8 @@ public class Main {
 
                 serverClient.subscribe("application/+/device/+/+/up", (topic,msg) ->{
                     MessegeParser mp = new MessegeParser(msg);
-                    message.setPayload(msg.getPayload());
+                    localClient.publish("test/" + mp.getKey(), message);
                 });
-
-                while (!Thread.currentThread().interrupted()) {
-                    localClient.publish("test/"+"", message);
-                }
 
                 while (!Thread.currentThread().interrupted()) {
                     Thread.sleep(100);

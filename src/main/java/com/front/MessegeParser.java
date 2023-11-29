@@ -1,6 +1,8 @@
 package com.front;
 
+import java.util.Date;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -19,6 +21,10 @@ public class MessegeParser {
 
     public JSONObject getDeviceInfo(){
         return (JSONObject) payload.get("deviceInfo");
+    }
+
+    public JSONObject getObject(){
+        return (JSONObject) payload.get("object");
     }
 
     public String getKey(){
@@ -44,6 +50,24 @@ public class MessegeParser {
             }
         }
         return commonTopic;
+    }
+
+    public JSONObject getPayload(){
+        long currentTime = new Date().getTime();
+        JSONArray payloadArray = new JSONArray();
+        if (getObject() != null) {
+            for (Object sensorType : getObject().keySet()) {
+                JSONObject newMessage = new JSONObject();
+                newMessage.put("topic", getKey() + "/e/" + sensorType);
+                JSONObject sensorData = new JSONObject();
+                newMessage.put("payload", sensorData);
+                sensorData.put("time", currentTime);
+                sensorData.put("value", getObject().get(sensorType));
+
+                payloadArray.add(newMessage);
+            }
+        }
+        return null;
     }
 
     public void messageParser(){
