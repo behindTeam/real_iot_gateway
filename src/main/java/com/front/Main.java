@@ -6,6 +6,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.simple.JSONObject;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,8 +25,27 @@ public class Main {
                 localClient.connect(options);
 
                 serverClient.subscribe("application/+/device/+/+/up", (topic,msg) ->{
-                    MessegeParser serverReceive = new MessegeParser(msg);
+                    MessegeParser mp = new MessegeParser(msg);
                     message.setPayload(msg.getPayload());
+                    Object tag = mp.getDeviceInfo().get("tags");
+                    if (tag instanceof JSONObject) {
+                        for (Object key : ((JSONObject)tag).keySet()) {
+                            switch (key.toString()) {
+                                case "site":
+                                    System.out.println("site : " + ((JSONObject)tag).get("site"));
+                                    break;
+                                case "name":
+                                    System.out.println("name : " + ((JSONObject)tag).get("name"));
+                                    break;
+                                case "branch":
+                                    System.out.println("branch : " + ((JSONObject)tag).get("branch"));
+                                    break;
+                                case "place":
+                                   System.out.println("place : " + ((JSONObject)tag).get("place"));
+                                    break;
+                            }
+                        }
+                    }
                 });
 
                 while (!Thread.currentThread().interrupted()) {
