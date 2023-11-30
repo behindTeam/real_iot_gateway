@@ -8,7 +8,7 @@ import com.front.node.ProcessCommandLineNode;
 import com.front.wire.BufferedWire;
 import com.front.wire.Wire;
 
-public class Main2 {
+public class Main {
     public static void main(String[] args) throws InterruptedException {
         Message argMessage = new StringArrayMessage(args);
         Wire wire1 = new BufferedWire();
@@ -23,8 +23,6 @@ public class Main2 {
         node.join();
         JsonMessage message = (JsonMessage) wire2.get();
         msgNode.connectInputWire(0, wire2);
-
-        System.out.println(message.getPayload().toString());
 
     }
 }

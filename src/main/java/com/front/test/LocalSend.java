@@ -1,4 +1,4 @@
-package com.front;
+package com.front.test;
 
 import java.util.UUID;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
