@@ -1,7 +1,5 @@
 package com.front;
 
-import org.json.simple.JSONObject;
-
 import com.front.message.JsonMessage;
 import com.front.message.Message;
 import com.front.message.StringArrayMessage;
@@ -22,7 +20,6 @@ public class Main2 {
         node.start();
         node.join();
         JsonMessage message = (JsonMessage) wire2.get();
-        // Thread.sleep(1000);
 
         System.out.println(message.getPayload().toString());
 
