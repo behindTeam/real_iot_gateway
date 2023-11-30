@@ -63,29 +63,52 @@ public class Main {
                     }
 
                     long currentTime = new Date().getTime();
-                    Object jsonFile = (JSONObject) parser.parse(new FileReader("src/main/java/com/front/index.json"));
 
-                    System.out.println(jsonFile);
+                    Object jsonFile = (JSONObject) parser
+                            .parse(new FileReader("src/main/resources/index.json"));
+
+                    JSONObject jsonObject = (JSONObject) jsonFile;
 
                     if (object != null) {
-
                         for (Object sensorType : object.keySet()) {
-                            System.out.println(deviceInfo.get("devEui"));
 
-                            JSONObject sensorData = new JSONObject();
-                            JSONObject deviceName = new JSONObject();
+                            String applicationName = (String) jsonObject.get("applicationName");
 
-                            sensorData.put("time", currentTime);
-                            sensorData.put("value", object.get(sensorType));
+                            if (deviceInfo.get("applicationName").equals(applicationName)) {
 
-                            JSONObject newMessage = new JSONObject();
+                                String sensor = (String) jsonObject.get("sensor");
 
-                            newMessage.put("payload", sensorData);
+                                if (sensor != null) {
+                                    String[] sensors = sensor.split(",");
 
-                            MqttMessage message = new MqttMessage(newMessage.toJSONString().getBytes());
-                            client.publish(commonTopic + "/m/" + sensorType, message);
+                                    System.out.println("Sensors:");
+                                    if (sensor.contains(sensorType.toString()))
+                                        for (String s : sensors) {
+                                            System.out.println(s.trim());
+
+                                            JSONObject sensorData = new JSONObject();
+                                            sensorData.put("time", currentTime);
+                                            sensorData.put("value", object.get(sensorType));
+
+                                            JSONObject newMessage = new JSONObject();
+                                            newMessage.put("payload", sensorData);
+
+                                            MqttMessage message = new MqttMessage(
+                                                    newMessage.toJSONString().getBytes());
+                                            client.publish(commonTopic + "/m/" + sensorType,
+                                                    message);
+
+                                        }
+                                } else {
+                                    System.out.println("센서없음");
+                                }
+                            } else {
+                                System.out.println("어플리케이션없음");
+                            }
+
                         }
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -98,9 +121,9 @@ public class Main {
             client.disconnect();
             infomation.disconnect();
 
-        } catch (MqttException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (MqttException |
+
+                InterruptedException e) {
             e.printStackTrace();
         }
     }
