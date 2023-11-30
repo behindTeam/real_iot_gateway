@@ -1,8 +1,9 @@
 package com.front;
 
 import java.util.Date;
+import org.eclipse.paho.client.mqttv3.IMqttClient;
+import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -68,8 +69,12 @@ public class MessegeParser {
                 sensorData.put("value", getObject().get(sensorType));
                 JSONObject newMessage = new JSONObject();
                 newMessage.put("payload", sensorData);
-                MqttMessage message = new MqttMessage(newMessage.toJSONString().getBytes());
-                this.outputmessage = message;
+                outputmessage = new MqttMessage(newMessage.toJSONString().getBytes());
+                try (IMqttClient localClient = new MqttClient("tcp://localhost", "sss")) {
+                    localClient.publish("test/" + topic + "/e/" + sensorType.toString(), outputmessage);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
             }
         }
     }
