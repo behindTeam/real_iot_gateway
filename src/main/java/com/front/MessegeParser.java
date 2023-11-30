@@ -70,11 +70,8 @@ public class MessegeParser {
                 JSONObject newMessage = new JSONObject();
                 newMessage.put("payload", sensorData);
                 outputmessage = new MqttMessage(newMessage.toJSONString().getBytes());
-                try (IMqttClient localClient = new MqttClient("tcp://localhost", "sss")) {
-                    localClient.publish("test/" + topic + "/e/" + sensorType.toString(), outputmessage);
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
+                LocalSend send = new LocalSend(topic, outputmessage, sensorType);
+                send.run();
             }
         }
     }

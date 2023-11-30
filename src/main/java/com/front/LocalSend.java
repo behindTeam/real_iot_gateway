@@ -20,6 +20,10 @@ public class LocalSend {
         String cunnetId = UUID.randomUUID().toString();
         try (IMqttClient localClient = new MqttClient("tcp://localhost:1883", cunnetId)) {
             localClient.publish("test/" + topic + "/e/" + sensorType.toString(), outputMessage);
+
+            while (!Thread.currentThread().interrupted()) {
+                Thread.sleep(100);
+            }
         } catch (Exception e) {
             // TODO: handle exception
         }

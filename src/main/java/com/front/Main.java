@@ -27,7 +27,6 @@ public class Main {
                     MessegeParser mp = new MessegeParser(msg);
                     mp.getKey();
                     mp.setPayload();
-                    localClient.publish("test/" + mp.getTopic() + "/e/" + mp.getSensorType(), mp.getPayload());
                 });
 
                 while (!Thread.currentThread().interrupted()) {
