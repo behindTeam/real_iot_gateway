@@ -1,5 +1,6 @@
 package com.front;
 
+import java.io.FileReader;
 import java.util.Date;
 import java.util.UUID;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
@@ -62,15 +63,23 @@ public class Main {
                     }
 
                     long currentTime = new Date().getTime();
+                    Object jsonFile = (JSONObject) parser.parse(new FileReader("src/main/java/com/front/index.json"));
+
+                    System.out.println(jsonFile);
 
                     if (object != null) {
+
                         for (Object sensorType : object.keySet()) {
+                            System.out.println(deviceInfo.get("devEui"));
 
                             JSONObject sensorData = new JSONObject();
+                            JSONObject deviceName = new JSONObject();
+
                             sensorData.put("time", currentTime);
                             sensorData.put("value", object.get(sensorType));
 
                             JSONObject newMessage = new JSONObject();
+
                             newMessage.put("payload", sensorData);
 
                             MqttMessage message = new MqttMessage(newMessage.toJSONString().getBytes());
