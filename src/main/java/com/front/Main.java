@@ -65,6 +65,7 @@ public class Main {
 
                     if (object != null) {
                         for (Object sensorType : object.keySet()) {
+
                             JSONObject sensorData = new JSONObject();
                             sensorData.put("time", currentTime);
                             sensorData.put("value", object.get(sensorType));
