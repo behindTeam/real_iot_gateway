@@ -57,8 +57,8 @@ public class ProcessCommandLineNode extends InputOutputNode {
     }
 
     public JSONObject processCommandLine(String args[]) {
-        String USAGE = "scurl [option] url";
-        String DEFAULT_PATH = "src/main/resources/index.json";
+        String usage = "scurl [option] url";
+        String path = "src/main/resources/index.json";
 
         Options cliOptions = new Options();
         cliOptions.addOption(new Option("applicationName", "an", true,
@@ -76,14 +76,14 @@ public class ProcessCommandLineNode extends InputOutputNode {
             CommandLine c = parser.parse(cliOptions, args);
 
             if (c.hasOption("h"))
-                helpFormatter.printHelp(USAGE, cliOptions);
+                helpFormatter.printHelp(usage, cliOptions);
 
             if (c.hasOption("c")) {
                 JSONParser jsonParser = new JSONParser();
                 Reader reader;
 
                 if (c.getOptionValue("c") == null) {
-                    reader = new FileReader(DEFAULT_PATH);
+                    reader = new FileReader(path);
                 } else {
                     reader = new FileReader(c.getOptionValue("c"));
                 }
@@ -104,7 +104,7 @@ public class ProcessCommandLineNode extends InputOutputNode {
                 }
             }
         } catch (ParseException e) {
-            helpFormatter.printHelp(USAGE, cliOptions);
+            helpFormatter.printHelp(usage, cliOptions);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (org.json.simple.parser.ParseException e) {

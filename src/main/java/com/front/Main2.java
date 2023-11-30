@@ -14,9 +14,17 @@ public class Main2 {
         Message argMessage = new StringArrayMessage(args);
         Wire wire1 = new BufferedWire();
         wire1.put(argMessage);
+        Wire wire2 = new BufferedWire();
 
         ProcessCommandLineNode node = new ProcessCommandLineNode();
         node.connectInputWire(0, wire1);
+        node.connectOutputWire(0, wire2);
+
+        node.start();
+
+        JsonMessage message = (JsonMessage) wire2.get();
+
+        System.out.println(message.getPayload().toString());
 
     }
 }
