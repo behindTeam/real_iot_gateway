@@ -10,7 +10,7 @@ import com.front.wire.BufferedWire;
 import com.front.wire.Wire;
 
 public class Main2 {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Message argMessage = new StringArrayMessage(args);
         Wire wire1 = new BufferedWire();
         wire1.put(argMessage);
@@ -19,10 +19,10 @@ public class Main2 {
         ProcessCommandLineNode node = new ProcessCommandLineNode();
         node.connectInputWire(0, wire1);
         node.connectOutputWire(0, wire2);
-
         node.start();
-
+        node.join();
         JsonMessage message = (JsonMessage) wire2.get();
+        // Thread.sleep(1000);
 
         System.out.println(message.getPayload().toString());
 

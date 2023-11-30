@@ -34,6 +34,14 @@ public class ProcessCommandLineNode extends InputOutputNode {
         super(inputCount, outputCount);
     }
 
+    public void join() {
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     void preprocess() {
         Wire inputWire = getInputWire(0);
@@ -54,6 +62,12 @@ public class ProcessCommandLineNode extends InputOutputNode {
     @Override
     void postprocess() {
         //
+    }
+
+    @Override
+    public void run() {
+        preprocess();
+        process();
     }
 
     public JSONObject processCommandLine(String args[]) {

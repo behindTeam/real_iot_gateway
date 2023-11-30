@@ -48,7 +48,8 @@ public class Main {
                     e.printStackTrace();
                 }
 
-                client2.publish("test/" + new String(message.getPayload()).length(), jsonObject.);
+                // client2.publish("test/" + new String(message.getPayload()).length(),
+                // jsonObject.);
             }
             // while (message.getPayload() != null) {
             // client2.publish("test/a/b/c", message);
