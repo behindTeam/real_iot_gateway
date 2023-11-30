@@ -7,7 +7,7 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-public class Main {
+public class MsgMain {
     public static void main(String[] args) {
         String cunnetId = UUID.randomUUID().toString();
         MqttMessage message= new MqttMessage();
