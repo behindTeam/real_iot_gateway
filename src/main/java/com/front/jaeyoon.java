@@ -65,8 +65,7 @@ public class jaeyoon {
 
                     long currentTime = new Date().getTime();
 
-                    Object jsonFile = (JSONObject) parser
-                            .parse(new FileReader("src/main/java/com/front/data.json"));
+                    Object jsonFile = (JSONObject) parser.parse(new FileReader("src/main/java/com/front/data.json"));
 
                     JSONObject jsonObject = (JSONObject) jsonFile;
 
