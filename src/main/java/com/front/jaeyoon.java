@@ -12,7 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class Main {
+public class jaeyoon {
     public static void main(String[] args) {
         String publisherId = UUID.randomUUID().toString();
 
@@ -73,16 +73,15 @@ public class Main {
                     if (object != null) {
                         for (Object sensorType : object.keySet()) {
 
-                            String deviceEui = (String) jsonObject.get("deviceEui");
+                            String applicationName = (String) jsonObject.get("applicationName");
 
-                            if (deviceInfo.get("devEui").equals(deviceEui)) {
+                            if (deviceInfo.get("applicationName").equals(applicationName)) {
 
                                 String sensor = (String) jsonObject.get("sensor");
 
                                 if (sensor != null) {
                                     String[] sensors = sensor.split(",");
 
-                                    System.out.println("Sensors:");
                                     if (sensor.contains(sensorType.toString()))
                                         for (String s : sensors) {
                                             System.out.println(s.trim());
@@ -99,15 +98,9 @@ public class Main {
                                             client.publish(commonTopic + "/m/" + sensorType,
                                                     message);
 
-
                                         }
-                                } else {
-                                    System.out.println("센서없음");
                                 }
-                            } else {
-                                System.out.println("어플리케이션없음");
                             }
-
 
                         }
                     }
