@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import com.fasterxml.jackson.core.JsonParser;
@@ -94,6 +95,23 @@ public class MessageParsingNode extends InputOutputNode {
             }
 
             long currentTime = new Date().getTime();
+            JSONArray payloadArray = new JSONArray();
+
+            // if (object != null) {
+            // for (Object sensorType : object.keySet()) {
+
+            // JSONObject sensorData = new JSONObject();
+            // sensorData.put("time", currentTime);
+            // sensorData.put("value", object.get(sensorType));
+
+            // JSONObject newMessage = new JSONObject();
+            // newMessage.put("payload", sensorData);
+
+            // MqttMessage message = new MqttMessage(newMessage.toJSONString().getBytes());
+            // client.publish(commonTopic + "/m/" + sensorType, message);
+            // }
+            // }
+
 
             if (object != null) {
                 for (Object sensorType : object.keySet()) {
@@ -105,23 +123,19 @@ public class MessageParsingNode extends InputOutputNode {
                         String sensor = (String) settings.get("sensor");
 
                         if (sensor != null) {
-                            String[] sensors = sensor.split(",");
+                            if (sensor.contains(sensorType.toString())) {
 
-                            if (sensor.contains(sensorType.toString()))
-                                for (String s : sensors) {
-                                    System.out.println(s.trim());
+                                JSONObject sensorData = new JSONObject();
+                                sensorData.put("time", currentTime);
+                                sensorData.put("value", object.get(sensorType));
 
-                                    JSONObject sensorData = new JSONObject();
-                                    sensorData.put("time", currentTime);
-                                    sensorData.put("value", object.get(sensorType));
+                                JSONObject newMessage = new JSONObject();
+                                newMessage.put("payload", sensorData);
+                                System.out.println(newMessage.toJSONString());
 
-                                    JSONObject newMessage = new JSONObject();
-                                    newMessage.put("payload", sensorData);
-                                    System.out.println(newMessage.toJSONString());
-
-                                    output(new MyMqttMessage(myMqttMessage.getSenderId(),
-                                            commonTopic, newMessage.toJSONString().getBytes()));
-                                }
+                                output(new MyMqttMessage(myMqttMessage.getSenderId(), commonTopic,
+                                        newMessage.toJSONString().getBytes()));
+                            }
                         }
                     }
                 }
