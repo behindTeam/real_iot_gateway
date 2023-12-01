@@ -1,8 +1,9 @@
 package com.front.node;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -11,7 +12,8 @@ import com.front.message.Message;
 import com.front.message.MyMqttMessage;
 import com.front.wire.Wire;
 
-public class MqttOutNode extends InputOutputNode{
+public class MqttOutNode extends InputOutputNode {
+    private static final Logger logger = LogManager.getLogger(MqttOutNode.class);
     Wire inputWire;
     UUID cunnetId;
 
@@ -24,26 +26,21 @@ public class MqttOutNode extends InputOutputNode{
     }
 
     @Override
-    void preprocess() {
-    }
+    void preprocess() {}
 
     @Override
     void process() {
-        if ((getInputWire(0) != null) && (getInputWire(0).hasMessage())) {
+        if (getInputWire(0) != null && getInputWire(0).hasMessage()) {
             Message myMqttMessage = getInputWire(0).get();
-            if (myMqttMessage instanceof MyMqttMessage) {
-                if (Objects.nonNull(((MyMqttMessage) myMqttMessage).getPayload())) {
-                    publish((MyMqttMessage) myMqttMessage);
-                }
+            if (myMqttMessage instanceof MyMqttMessage
+                    && Objects.nonNull(((MyMqttMessage) myMqttMessage).getPayload())) {
+                publish((MyMqttMessage) myMqttMessage);
             }
         }
     }
 
-    @Override
-    void postprocess() {
-    }
 
-    public void publish(MyMqttMessage inMessage){
+    public void publish(MyMqttMessage inMessage) {
         cunnetId = UUID.randomUUID();
         try (IMqttClient localClient = new MqttClient("tcp://localhost", cunnetId.toString())) {
             MqttConnectOptions options = new MqttConnectOptions();
@@ -53,7 +50,7 @@ public class MqttOutNode extends InputOutputNode{
             localClient.publish(inMessage.getTopic(), new MqttMessage(inMessage.getPayload()));
             localClient.disconnect();
         } catch (Exception e) {
-            System.err.println("");
+            logger.error("Exception", e);
         }
     }
 }

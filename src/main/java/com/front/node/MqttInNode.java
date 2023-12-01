@@ -1,14 +1,18 @@
 package com.front.node;
 
 import java.util.UUID;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import com.front.message.MyMqttMessage;
 import com.front.wire.Wire;
 
 public class MqttInNode extends InputOutputNode {
     Wire outputWire;
+    private static final Logger logger = LogManager.getLogger(MqttInNode.class);
 
     public MqttInNode() {
         this(1, 1);
@@ -26,7 +30,8 @@ public class MqttInNode extends InputOutputNode {
     @Override
     void process() {
         UUID cunnetId = UUID.randomUUID();
-        try (IMqttClient serverClient = new MqttClient("tcp://ems.nhnacademy.com", cunnetId.toString())) {
+        try (IMqttClient serverClient =
+                new MqttClient("tcp://ems.nhnacademy.com", cunnetId.toString())) {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setAutomaticReconnect(true);
             options.setCleanSession(true);
@@ -38,19 +43,25 @@ public class MqttInNode extends InputOutputNode {
                 output(mqttmessage);
             });
 
-            while (!Thread.currentThread().interrupted()) {
-                Thread.sleep(100);
+            while (!Thread.currentThread().isInterrupted()) {
+                sleepForInterval();
             }
 
             serverClient.disconnect();
-        } catch (Exception e) {
-            System.err.println("");
+        } catch (MqttException e) {
+            Thread.currentThread().interrupt();
+            logger.error("MqttException", e);
         }
+
+
     }
 
-    @Override
-    void postprocess() {
-        //
+    public void sleepForInterval() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     @Override
@@ -59,5 +70,4 @@ public class MqttInNode extends InputOutputNode {
         process();
         postprocess();
     }
-
 }
