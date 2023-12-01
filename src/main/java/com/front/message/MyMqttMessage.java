@@ -22,9 +22,9 @@ public class MyMqttMessage extends Message {
     /**
      * MyMqttMessage 클래스의 생성자
      * 
-     * @param senderId 발신자의 UUID
-     * @param topic    메시지의 토픽
-     * @param payload  메시지의 payload
+     * @param senderId 발신자 UUID
+     * @param topic    메시지 토픽
+     * @param payload  메시지 payload
      */
     public MyMqttMessage(UUID senderId, String topic, byte[] payload) {
         this.payload = Arrays.copyOf(payload, payload.length);
@@ -33,7 +33,7 @@ public class MyMqttMessage extends Message {
     }
 
     /**
-     * 발신자의 UUID를 반환하는 메서드
+     * 발신자의 UUID를 반환하는 getter 메서드
      * 
      * @return 발신자의 UUID
      */
@@ -42,7 +42,7 @@ public class MyMqttMessage extends Message {
     }
 
     /**
-     * 메시지의 payload를 반환하는 메서드
+     * 메시지의 payload를 반환하는 getter 메서드
      * 
      * @return 메시지의 payload
      */
@@ -51,7 +51,7 @@ public class MyMqttMessage extends Message {
     }
 
     /**
-     * 메시지의 토픽을 반환하는 메서드
+     * 메시지의 토픽을 반환하는 getter 메서드
      * 
      * @return 메시지의 토픽
      */

@@ -20,7 +20,7 @@ import com.github.f4b6a3.uuid.UuidCreator;
  * </p>
  * 
  * <p>
- * 노드의 ID는 UUID(Universal Unique Identifier)를 사용하여 생성하며, 이름은 사용자가 지정할 수 있습니다.
+ * 노드의 ID는 UUID를 사용하여 생성하며, 이름은 사용자가 지정할 수 있습니다.
  * </p>
  * 
  * <p>

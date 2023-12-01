@@ -21,7 +21,7 @@ public abstract class Message {
     }
 
     /**
-     * 메시지의 고유한 ID를 반환하는 메서드
+     * 메시지의 고유한 ID를 반환하는 getter 메서드
      *
      * @return 메시지의 ID
      */
@@ -30,7 +30,7 @@ public abstract class Message {
     }
 
     /**
-     * 메시지의 생성 시간을 반환하는 메서드
+     * 메시지의 생성 시간을 반환하는 getter 메서드
      *
      * @return 메시지가 생성된 시간 (타임스탬프)
      */
@@ -39,7 +39,7 @@ public abstract class Message {
     }
 
     /**
-     * 생성된 메시지의 총 수를 반환하는 정적 메서드
+     * 생성된 메시지의 총 수를 반환하는 static 메서드 (공유자원)
      *
      * @return 생성된 메시지의 총 수
      */

@@ -9,6 +9,15 @@ import com.front.node.ProcessCommandLineNode;
 import com.front.wire.BufferedWire;
 import com.front.wire.Wire;
 
+/**
+ * {@code MessageParsingTest} 클래스는 메시지 처리 노드들을 연결하여 테스트하는 예제입니다.
+ * 
+ * <p>
+ * 이 테스트는 명령행 인수를 받아와서 처리하는 {@code ProcessCommandLineNode}, MQTT 브로커에서 메시지를 수신하는
+ * {@code MqttInNode}, 메시지 파싱을 담당하는 {@code MessageParsingNode}, 그리고 MQTT 브로커로
+ * 메시지를 전송하는 {@code MqttOutNode}를 연결하여 실행
+ * </p>
+ */
 public class MessageParsingTest {
 
     public static void main(String[] args) throws InterruptedException {
@@ -38,13 +47,6 @@ public class MessageParsingTest {
         node.join();
         mqttInNode.start();
         msgParsingNode.start();
-        // msgParsingNode.join();
-
-        // Wire wire2 = new BufferedWire();
-
-        // MqttNode node = new MqttNode();
-        // node.connectOutputWire(0, wire2);
-        // node.start();
     }
 
 }

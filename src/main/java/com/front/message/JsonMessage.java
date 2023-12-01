@@ -12,7 +12,7 @@ public class JsonMessage extends Message {
     /**
      * JsonMessage 클래스 생성자
      *
-     * @param payload JSON 객체를 포함한 메시지 payload
+     * @param payload JSON 메시지 payload
      */
     public JsonMessage(JSONObject payload) {
         this.payload = payload;
@@ -21,7 +21,7 @@ public class JsonMessage extends Message {
     /**
      * 메시지의 payload에 포함된 JSON 객체를 반환하는 메서드
      *
-     * @return JSON 객체를 포함한 payload
+     * @return JSON payload
      */
     public JSONObject getPayload() {
         return payload;

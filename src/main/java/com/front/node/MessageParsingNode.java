@@ -38,14 +38,14 @@ public class MessageParsingNode extends InputOutputNode {
     JSONObject settings;
 
     /**
-     * 기본 생성자로, 입력 및 출력 와이어 개수를 기본값으로 설정합니다.
+     * 기본 생성자로, 입력 및 출력 와이어 개수를 기본값으로 설정
      */
     public MessageParsingNode() {
         this(2, 1);
     }
 
     /**
-     * 입력 및 출력 와이어 개수를 지정하여 생성하는 생성자입니다.
+     * 입력 및 출력 와이어 개수를 지정하여 생성하는 생성자
      * 
      * @param inCount  입력 와이어 개수
      * @param outCount 출력 와이어 개수
@@ -56,7 +56,7 @@ public class MessageParsingNode extends InputOutputNode {
     }
 
     /**
-     * 전처리 메서드로, 설정 메시지를 받아 설정 정보를 추출합니다.
+     * 전처리 메서드로, 설정 메시지를 받아 설정 정보를 추출
      */
     @Override
     void preprocess() {
@@ -66,7 +66,7 @@ public class MessageParsingNode extends InputOutputNode {
     }
 
     /**
-     * 메시지 처리 메서드로, MQTT 메시지를 파싱하여 필요한 정보를 추출하고 출력 메시지를 생성합니다.
+     * 메시지 처리 메서드로, MQTT 메시지를 파싱하여 필요한 정보를 추출하고 출력 메시지를 생성
      */
     @Override
     void process() {
@@ -81,14 +81,14 @@ public class MessageParsingNode extends InputOutputNode {
     }
 
     /**
-     * 후처리 메서드로, 추가적인 후처리 동작이 필요한 경우 구현할 수 있습니다.
+     * 후처리 메서드 (구현 x)
      */
     @Override
     void postprocess() {
     }
 
     /**
-     * MQTT 메시지를 파싱하여 필요한 정보를 추출하고, 설정된 조건에 따라 출력 메시지를 생성하여 전송합니다.
+     * MQTT 메시지를 파싱하여 필요한 정보를 추출하고, 설정된 조건에 따라 출력 메시지를 생성하여 전송
      * 
      * @param myMqttMessage 파싱할 MQTT 메시지 객체
      */
