@@ -4,7 +4,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
-import java.util.Scanner;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -70,9 +69,9 @@ public class ProcessCommandLineNode extends InputOutputNode {
         process();
     }
 
-    public JSONObject processCommandLine(String args[]) {
+    public JSONObject processCommandLine(String[] args) {
         String usage = "scurl [option] url";
-        String path = "src/main/resources/index.json";
+        String path = "src/main/java/com/front/data.json";
 
         Options cliOptions = new Options();
         cliOptions.addOption(new Option("applicationName", "an", true,

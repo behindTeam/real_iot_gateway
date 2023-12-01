@@ -6,6 +6,36 @@
     "configurations": [
         {
             "type": "java",
+            "name": "MessageParsingTest",
+            "request": "launch",
+            "mainClass": "com.front.test.MessageParsingTest",
+            "projectName": "iot_gateway",
+            "args": "-c -s humidity,temperature,co2"
+        },
+        {
+            "type": "java",
+            "name": "MqttNodeTest",
+            "request": "launch",
+            "mainClass": "com.front.test.MqttNodeTest",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
+            "name": "MsgMain",
+            "request": "launch",
+            "mainClass": "com.front.test.MsgMain",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
+            "name": "ComandLineArgumetsTest",
+            "request": "launch",
+            "mainClass": "com.front.test.ComandLineArgumetsTest",
+            "projectName": "iot_gateway",
+            "args": "--an MyApplicationName -s temperature,huminity"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
