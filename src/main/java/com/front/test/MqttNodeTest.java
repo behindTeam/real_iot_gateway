@@ -15,5 +15,6 @@ public class MqttNodeTest {
         MqttNode node = new MqttNode();
         node.connectOutputWire(0, wire2);
         node.start();
+
     }
 }

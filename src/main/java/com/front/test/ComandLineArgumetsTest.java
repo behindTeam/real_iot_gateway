@@ -22,6 +22,5 @@ public class ComandLineArgumetsTest {
         node.join();
         JsonMessage message = (JsonMessage) wire2.get();
         System.out.println(message);
-
     }
 }

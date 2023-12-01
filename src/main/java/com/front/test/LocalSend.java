@@ -10,13 +10,13 @@ public class LocalSend {
     MqttMessage outputMessage;
     Object sensorType;
 
-    public LocalSend(String topic, MqttMessage message, Object sensorTpye){
+    public LocalSend(String topic, MqttMessage message, Object sensorTpye) {
         this.topic = topic;
         this.outputMessage = message;
         this.sensorType = sensorTpye;
     }
 
-    public void run(){
+    public void run() {
         String cunnetId = UUID.randomUUID().toString();
         try (IMqttClient localClient = new MqttClient("tcp://localhost:1883", cunnetId)) {
             localClient.publish("test/" + topic + "/e/" + sensorType.toString(), outputMessage);

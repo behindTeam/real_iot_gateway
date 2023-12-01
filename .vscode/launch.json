@@ -9,13 +9,6 @@
             "name": "MessageParsingTest",
             "request": "launch",
             "mainClass": "com.front.test.MessageParsingTest",
-            "projectName": "iot_gateway"
-        },
-        {
-            "type": "java",
-            "name": "messageParsingTest",
-            "request": "launch",
-            "mainClass": "com.front.test.messageParsingTest",
             "projectName": "iot_gateway",
             "args": "-c -s humidity,temperature,co2"
         },

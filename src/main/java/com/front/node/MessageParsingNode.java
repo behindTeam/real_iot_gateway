@@ -34,6 +34,14 @@ public class MessageParsingNode extends InputOutputNode {
         parser = new JSONParser();
     }
 
+    // public void join() {
+    // try {
+    // thread.join();
+    // } catch (InterruptedException e) {
+    // e.printStackTrace();
+    // }
+    // }
+
     @Override
     void preprocess() {
         settingWire = getInputWire(0);

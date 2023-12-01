@@ -36,6 +36,7 @@ public class MessageParsingTest {
         node.join();
         mqttNode.start();
         msgParsingNode.start();
+        // msgParsingNode.join();
 
         // Wire wire2 = new BufferedWire();
 
