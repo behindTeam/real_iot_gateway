@@ -1,6 +1,5 @@
 package com.front.node;
 
-import java.util.HashMap;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -38,10 +37,6 @@ import com.github.f4b6a3.uuid.UuidCreator;
  * 
  * <p>
  * 노드의 JSON 표현을 생성하는 메서드가 포함되어 있습니다.
- * </p>
- * 
- * <p>
- * 사용 전에 반드시 필요한 설정을 확인하고, 필요한 동작이 추가되거나 수정될 수 있습니다.
  * </p>
  */
 public abstract class Node {
