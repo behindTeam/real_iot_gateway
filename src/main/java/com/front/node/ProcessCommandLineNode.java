@@ -70,7 +70,7 @@ public class ProcessCommandLineNode extends InputOutputNode {
         process();
     }
 
-    public JSONObject processCommandLine(String args[]) {
+    public JSONObject processCommandLine(String[] args) {
         String usage = "scurl [option] url";
         String path = "src/main/resources/index.json";
 
