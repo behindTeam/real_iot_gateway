@@ -27,7 +27,7 @@ public class MqttInNode extends InputOutputNode {
     void process() {
         UUID cunnetId = UUID.randomUUID();
         try (IMqttClient serverClient =
-                new MqttClient("tcp://ems.nhnacademy.com", cunnetId.toString())) {
+                new MqttClient("tcp://ems.nhnacademy.com:1883", cunnetId.toString())) {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setAutomaticReconnect(true);
             options.setCleanSession(true);
