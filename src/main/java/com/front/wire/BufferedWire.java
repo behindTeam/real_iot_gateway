@@ -1,7 +1,4 @@
-/**
- * BufferedWire 클래스는 Wire 인터페이스를 구현하여 메시지를 버퍼에 저장하고 관리하는 클래스입니다.
- * 이 클래스는 메시지를 큐에 저장하고, 필요에 따라 메시지를 추출하거나 유무를 확인할 수 있습니다.
- */
+
 package com.front.wire;
 
 import java.util.LinkedList;
@@ -9,6 +6,10 @@ import java.util.Queue;
 
 import com.front.message.Message;
 
+/**
+ * {@code BufferedWire} 클래스는 Wire 인터페이스를 구현하여 메시지를 버퍼에 저장하고 관리하는 클래스입니다.
+ * 이 클래스는 메시지를 큐에 저장하고, 필요에 따라 메시지를 추출하거나 유무를 확인할 수 있습니다.
+ */
 public class BufferedWire implements Wire {
     Queue<Message> messageQueue;
 

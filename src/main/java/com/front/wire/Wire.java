@@ -1,10 +1,11 @@
-/**
- * Wire 인터페이스는 메시지를 관리하는 Wire 구현 클래스가 메서드를 정의하도록 돕는 추상 클래스입니다.
- */
+
 package com.front.wire;
 
 import com.front.message.Message;
 
+/**
+ * {@code Wire} 인터페이스는 메시지를 관리하는 Wire 구현 클래스가 메서드를 정의하도록 돕는 추상 클래스입니다.
+ */
 public interface Wire {
 
     /**
