@@ -10,4 +10,5 @@ public class BooleanMessage extends Message {
     public boolean getPayload() {
         return payload;
     }
+
 }

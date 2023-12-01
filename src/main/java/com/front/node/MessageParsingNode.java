@@ -38,7 +38,9 @@ public class MessageParsingNode extends InputOutputNode {
     void preprocess() {
         settingWire = getInputWire(0);
         JsonMessage settingMessage = (JsonMessage) settingWire.get();
-        settings = settingMessage.getPayload();
+        if (settingMessage.getPayload() != null) {
+            settings = settingMessage.getPayload();
+        }
     }
 
     @Override
@@ -118,8 +120,7 @@ public class MessageParsingNode extends InputOutputNode {
                                     System.out.println(newMessage.toJSONString());
 
                                     output(new MyMqttMessage(myMqttMessage.getSenderId(),
-                                            commonTopic,
-                                            newMessage.toJSONString().getBytes()));
+                                            commonTopic, newMessage.toJSONString().getBytes()));
                                 }
                         }
                     }
