@@ -15,27 +15,25 @@ public class MessageParsingTest {
 
         Message argMessage = new StringArrayMessage(args);
         Wire wire1 = new BufferedWire();
-        wire1.put(argMessage);
         Wire wire2 = new BufferedWire();
-
-        ProcessCommandLineNode node = new ProcessCommandLineNode();
-        node.connectInputWire(0, wire1);
-        node.connectOutputWire(0, wire2);
-        node.start();
-        node.join();
-
         Wire wire3 = new BufferedWire();
-
-        MqttNode mqttNode = new MqttNode();
-        mqttNode.connectOutputWire(0, wire3);
-
         Wire wire4 = new BufferedWire();
 
+        ProcessCommandLineNode node = new ProcessCommandLineNode();
+        MqttNode mqttNode = new MqttNode();
         MessageParsingNode msgParsingNode = new MessageParsingNode();
+
+        wire1.put(argMessage);
+
+        node.connectInputWire(0, wire1);
+        node.connectOutputWire(0, wire2);
+        mqttNode.connectOutputWire(0, wire3);
         msgParsingNode.connectInputWire(0, wire2);
         msgParsingNode.connectInputWire(1, wire3);
         msgParsingNode.connectOutputWire(0, wire4);
 
+        node.start();
+        node.join();
         mqttNode.start();
         msgParsingNode.start();
 

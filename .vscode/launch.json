@@ -17,7 +17,7 @@
             "request": "launch",
             "mainClass": "com.front.test.messageParsingTest",
             "projectName": "iot_gateway",
-            "args": "-c --an NHNAcademyEMS -s humidity,temperature,co2"
+            "args": "-c -s humidity,temperature,co2"
         },
         {
             "type": "java",
