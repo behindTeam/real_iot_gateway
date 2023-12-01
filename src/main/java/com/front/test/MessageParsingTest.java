@@ -1,10 +1,10 @@
 package com.front.test;
 
-import com.front.message.JsonMessage;
 import com.front.message.Message;
 import com.front.message.StringArrayMessage;
 import com.front.node.MessageParsingNode;
 import com.front.node.MqttInNode;
+import com.front.node.MqttOutNode;
 import com.front.node.ProcessCommandLineNode;
 import com.front.wire.BufferedWire;
 import com.front.wire.Wire;
@@ -20,30 +20,25 @@ public class MessageParsingTest {
         Wire wire4 = new BufferedWire();
 
         ProcessCommandLineNode node = new ProcessCommandLineNode();
-        MqttInNode mqttNode = new MqttInNode();
+        MqttInNode mqttInNode = new MqttInNode();
         MessageParsingNode msgParsingNode = new MessageParsingNode();
+        MqttOutNode mqttOutNode = new MqttOutNode();
 
         wire1.put(argMessage);
 
         node.connectInputWire(0, wire1);
         node.connectOutputWire(0, wire2);
-        mqttNode.connectOutputWire(0, wire3);
+        mqttInNode.connectOutputWire(0, wire3);
         msgParsingNode.connectInputWire(0, wire2);
         msgParsingNode.connectInputWire(1, wire3);
         msgParsingNode.connectOutputWire(0, wire4);
+        mqttOutNode.connectInputWire(0, wire4);
 
         node.start();
         node.join();
-        mqttNode.start();
+        mqttInNode.start();
         msgParsingNode.start();
-
-        System.out.println(msgParsingNode.getOutputWire(0));
-
-        // Wire wire2 = new BufferedWire();
-
-        // MqttNode node = new MqttNode();
-        // node.connectOutputWire(0, wire2);
-        // node.start();
+        mqttOutNode.start();
     }
 
 }

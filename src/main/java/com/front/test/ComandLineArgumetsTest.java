@@ -16,6 +16,7 @@ public class ComandLineArgumetsTest {
         Wire wire2 = new BufferedWire();
 
         ProcessCommandLineNode node = new ProcessCommandLineNode();
+
         node.connectInputWire(0, wire1);
         node.connectOutputWire(0, wire2);
         node.start();
