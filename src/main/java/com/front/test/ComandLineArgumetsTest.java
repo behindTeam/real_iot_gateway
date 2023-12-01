@@ -31,7 +31,6 @@ public class ComandLineArgumetsTest {
         // 3. ProcessCommandLineNode 인스턴스 생성
         ProcessCommandLineNode node = new ProcessCommandLineNode();
 
-        // 4. 와이어 연결
         node.connectInputWire(0, wire1);
         node.connectOutputWire(0, wire2);
 

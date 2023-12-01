@@ -128,30 +128,21 @@ public class MessageParsingNode extends InputOutputNode {
 
             if (object != null) {
                 for (Object sensorType : object.keySet()) {
-
-                    String applicationName = (String) settings.get("applicationName");
-
-                    if (deviceInfo.get("applicationName").equals(applicationName)) {
-
+                    if (deviceInfo.get("applicationName").equals(settings.get("applicationName"))) {
                         String sensor = (String) settings.get("sensor");
-
-                        if (sensor != null) {
+                        if (settings.get("sensor") != null) {
                             String[] sensors = sensor.split(",");
 
                             if (sensor.contains(sensorType.toString()))
                                 for (String s : sensors) {
-                                    System.out.println(s.trim());
-
                                     JSONObject sensorData = new JSONObject();
                                     sensorData.put("time", currentTime);
                                     sensorData.put("value", object.get(sensorType));
 
                                     JSONObject newMessage = new JSONObject();
                                     newMessage.put("payload", sensorData);
-                                    System.out.println(newMessage.toJSONString());
-
                                     output(new MyMqttMessage(myMqttMessage.getSenderId(),
-                                            commonTopic,
+                                            commonTopic + "/e/" + sensorType.toString(),
                                             newMessage.toJSONString().getBytes()));
                                 }
                         }
