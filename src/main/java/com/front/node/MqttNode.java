@@ -12,10 +12,10 @@ import com.front.test.MessegeParser;
 import com.front.wire.BufferedWire;
 import com.front.wire.Wire;
 
-public class MqttNode extends InputOutputNode{
+public class MqttNode extends InputOutputNode {
     Wire outputWire;
 
-    public MqttNode(){
+    public MqttNode() {
         this(1, 1);
     }
 
@@ -38,8 +38,8 @@ public class MqttNode extends InputOutputNode{
 
             serverClient.connect(options);
 
-            serverClient.subscribe("application/+/device/+/+/up", (topic,msg) ->{
-                MyMqttMessage mqttmessage = new MyMqttMessage(cunnetId, msg.getPayload());
+            serverClient.subscribe("application/+/device/+/+/up", (topic, msg) -> {
+                MyMqttMessage mqttmessage = new MyMqttMessage(cunnetId, topic, msg.getPayload());
                 output(mqttmessage);
             });
 
@@ -48,10 +48,10 @@ public class MqttNode extends InputOutputNode{
             }
 
             serverClient.disconnect();
-            } catch (Exception e) {
-                System.err.println("");
-            }
+        } catch (Exception e) {
+            System.err.println("");
         }
+    }
 
     @Override
     void postprocess() {
