@@ -4,7 +4,7 @@ import com.front.message.JsonMessage;
 import com.front.message.Message;
 import com.front.message.StringArrayMessage;
 import com.front.node.MessageParsingNode;
-import com.front.node.MqttNode;
+import com.front.node.MqttInNode;
 import com.front.node.ProcessCommandLineNode;
 import com.front.wire.BufferedWire;
 import com.front.wire.Wire;
@@ -20,7 +20,7 @@ public class MessageParsingTest {
         Wire wire4 = new BufferedWire();
 
         ProcessCommandLineNode node = new ProcessCommandLineNode();
-        MqttNode mqttNode = new MqttNode();
+        MqttInNode mqttNode = new MqttInNode();
         MessageParsingNode msgParsingNode = new MessageParsingNode();
 
         wire1.put(argMessage);
@@ -36,6 +36,8 @@ public class MessageParsingTest {
         node.join();
         mqttNode.start();
         msgParsingNode.start();
+
+        System.out.println(msgParsingNode.getOutputWire(0));
 
         // Wire wire2 = new BufferedWire();
 

@@ -4,22 +4,17 @@ import java.util.UUID;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import com.front.message.JsonMessage;
-import com.front.message.Message;
 import com.front.message.MyMqttMessage;
-import com.front.message.StringArrayMessage;
-import com.front.test.MessegeParser;
-import com.front.wire.BufferedWire;
 import com.front.wire.Wire;
 
-public class MqttNode extends InputOutputNode {
+public class MqttInNode extends InputOutputNode {
     Wire outputWire;
 
-    public MqttNode() {
+    public MqttInNode() {
         this(1, 1);
     }
 
-    public MqttNode(int inCount, int outCount) {
+    public MqttInNode(int inCount, int outCount) {
         super(inCount, outCount);
     }
 
