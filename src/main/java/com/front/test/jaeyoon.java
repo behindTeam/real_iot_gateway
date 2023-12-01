@@ -17,8 +17,7 @@ public class jaeyoon {
         String publisherId = UUID.randomUUID().toString();
 
         try (IMqttClient client = new MqttClient("tcp://localhost:1883", publisherId);
-                IMqttClient infomation =
-                        new MqttClient("tcp://ems.nhnacademy.com:1883", publisherId)) {
+                IMqttClient infomation = new MqttClient("tcp://ems.nhnacademy.com:1883", publisherId)) {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setAutomaticReconnect(true);
             options.setCleanSession(true);

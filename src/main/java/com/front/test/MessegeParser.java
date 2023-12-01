@@ -16,43 +16,42 @@ public class MessegeParser {
     MqttMessage outputmessage;
     String topic;
     Object sensorType;
-    
 
-    public MessegeParser(MqttMessage msg) throws ParseException{
+    public MessegeParser(MqttMessage msg) throws ParseException {
         this.messege = msg;
         jsonParser = new JSONParser();
         payload = (JSONObject) jsonParser.parse(new String(msg.getPayload()));
     }
 
-    public JSONObject getDeviceInfo(){
+    public JSONObject getDeviceInfo() {
         return (JSONObject) payload.get("deviceInfo");
     }
 
-    public JSONObject getObject(){
+    public JSONObject getObject() {
         return (JSONObject) payload.get("object");
     }
 
-    public String getTopic(){
+    public String getTopic() {
         return topic;
     }
 
-    public void getKey(){
+    public void getKey() {
         String commonTopic = "data";
         Object tag = getDeviceInfo().get("tags");
         if (tag instanceof JSONObject) {
-            for (Object key : ((JSONObject)tag).keySet()) {
+            for (Object key : ((JSONObject) tag).keySet()) {
                 switch (key.toString()) {
                     case "site":
-                        commonTopic += "/s/" + ((JSONObject)tag).get("site");
+                        commonTopic += "/s/" + ((JSONObject) tag).get("site");
                         break;
                     case "name":
-                        commonTopic += "/n/" + ((JSONObject)tag).get("name");
+                        commonTopic += "/n/" + ((JSONObject) tag).get("name");
                         break;
                     case "branch":
-                        commonTopic += "/b/" + ((JSONObject)tag).get("branch");
+                        commonTopic += "/b/" + ((JSONObject) tag).get("branch");
                         break;
                     case "place":
-                        commonTopic += "/p/" + ((JSONObject)tag).get("place");
+                        commonTopic += "/p/" + ((JSONObject) tag).get("place");
                         break;
                     default:
                 }
@@ -61,7 +60,7 @@ public class MessegeParser {
         this.topic = commonTopic;
     }
 
-    public void setPayload(){
+    public void setPayload() {
         if (getObject() != null) {
             for (Object sensorType : getObject().keySet()) {
                 setSenorType(sensorType);
@@ -77,23 +76,23 @@ public class MessegeParser {
         }
     }
 
-    public void setSenorType(Object sensorType){
+    public void setSenorType(Object sensorType) {
         this.sensorType = sensorType;
     }
 
-    public String getSensorType(){
+    public String getSensorType() {
         return sensorType.toString();
     }
 
-    public MqttMessage getPayload(){
+    public MqttMessage getPayload() {
         return outputmessage;
     }
 
-    public void messageParser(){
+    public void messageParser() {
         messege.getPayload();
     }
 
-    public MqttMessage printMessage(){
+    public MqttMessage printMessage() {
         return messege;
     }
 }
