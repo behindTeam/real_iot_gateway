@@ -1,8 +1,10 @@
-/**
- * {@code StringMessage} 클래스는 Message 클래스를 상속받아 String 타입의 payload를 갖는 메시지를 나타냅니다.
- */
+
 package com.front.message;
 
+/**
+ * {@code StringMessage} 클래스는 Message 클래스를 상속받아 String 타입의 payload를 갖는 메시지를
+ * 나타냅니다.
+ */
 public class StringMessage extends Message {
     String payload;
 

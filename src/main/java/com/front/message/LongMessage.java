@@ -1,8 +1,9 @@
+
+package com.front.message;
+
 /**
  * {@code LongMessage} 클래스는 Message 클래스를 상속받아 long 타입의 payload를 갖는 메시지를 나타냅니다.
  */
-package com.front.message;
-
 public class LongMessage extends Message {
     long payload;
 
