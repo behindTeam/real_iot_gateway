@@ -1,5 +1,5 @@
 /**
- * StringArrayMessage 클래스는 Message 클래스를 상속받아 String 배열을 페이로드로 갖는 메시지를 나타냅니다.
+ * {@code StringArrayMessage} 클래스는 Message 클래스를 상속받아 String 배열을 페이로드로 갖는 메시지를 나타냅니다.
  */
 package com.front.message;
 

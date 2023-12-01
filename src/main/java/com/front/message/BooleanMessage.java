@@ -1,5 +1,5 @@
 /**
- * BooleanMessage 클래스는 Message 클래스를 상속받아 boolean 타입의 payload를 갖는 메시지입니다.
+ * {@code BooleanMessage} 클래스는 Message 클래스를 상속받아 boolean 타입의 payload를 갖는 메시지입니다.
  */
 package com.front.message;
 

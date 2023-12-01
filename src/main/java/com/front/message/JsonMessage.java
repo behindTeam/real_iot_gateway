@@ -1,5 +1,5 @@
 /**
- * JsonMessage 클래스는 Message 클래스를 상속받아 JSON 객체를 payload로 갖는 메시지를 나타냅니다.
+ * {@code JsonMessage} 클래스는 Message 클래스를 상속받아 JSON 객체를 payload로 갖는 메시지를 나타냅니다.
  */
 package com.front.message;
 

@@ -1,5 +1,5 @@
 /**
- * Message 추상 클래스는 메시지의 기본 속성 및 행동을 정의합니다.
+ * {@code Message} 추상 클래스는 메시지의 기본 속성 및 행동을 정의합니다.
  */
 package com.front.message;
 
