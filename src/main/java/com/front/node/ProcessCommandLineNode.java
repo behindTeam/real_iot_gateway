@@ -17,11 +17,29 @@ import org.json.simple.parser.JSONParser;
 
 import com.front.message.JsonMessage;
 import com.front.message.Message;
-import com.front.message.StringMessage;
 import com.front.message.StringArrayMessage;
 
 import com.front.wire.Wire;
 
+/**
+ * {@code ProcessCommandLineNode}는 명령줄 인자를 처리하여 JSON 메시지를 생성하는 노드입니다.
+ * 
+ * <p>
+ * 입력으로 받은 명령줄 인자를 처리하고, 설정된 옵션에 따라 JSON 형식의 메시지를 생성하여 출력합니다.
+ * </p>
+ * 
+ * <p>
+ * 명령줄 옵션과 관련된 설정은 Apache Commons CLI 라이브러리를 사용하여 처리합니다.
+ * </p>
+ * 
+ * <p>
+ * 생성자에서는 입력 및 출력 와이어의 개수를 받아 초기화하며, 명령줄 인자를 저장할 배열을 관리합니다.
+ * </p>
+ * 
+ * <p>
+ * {@code processCommandLine} 메서드에서 명령줄 옵션을 처리하고, 설정된 값에 따라 JSON 객체를 생성합니다.
+ * </p>
+ */
 public class ProcessCommandLineNode extends InputOutputNode {
     private String[] args;
 
@@ -69,6 +87,12 @@ public class ProcessCommandLineNode extends InputOutputNode {
         process();
     }
 
+    /**
+     * 입력으로 받은 명령줄 인자를 처리하여 JSON 객체를 반환하는 메서드입니다.
+     * 
+     * @param args 명령줄 인자 배열
+     * @return 처리된 명령줄 인자에 기반한 JSON 객체
+     */
     public JSONObject processCommandLine(String[] args) {
         String usage = "scurl [option] url";
         String path = "src/main/java/com/front/data.json";

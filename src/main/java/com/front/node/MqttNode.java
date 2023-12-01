@@ -4,17 +4,29 @@ import java.util.UUID;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import com.front.message.JsonMessage;
-import com.front.message.Message;
 import com.front.message.MyMqttMessage;
-import com.front.message.StringArrayMessage;
-import com.front.test.MessegeParser;
-import com.front.wire.BufferedWire;
 import com.front.wire.Wire;
 
+/**
+ * {@code MqttNode}는 MQTT 브로커와 연결하여 메시지를 수신하는 역할을 하는 노드입니다.
+ * 
+ * <p>
+ * {@code MqttNode}는 {@code InputOutputNode}를 상속하며, MQTT 브로커와 연결하여 메시지를 수신하고
+ * 해당 메시지를 출력 와이어로 전송합니다.
+ * </p>
+ * 
+ * <p>
+ * MQTT 브로커와의 연결, 메시지 수신 등의 동작은 {@code process()} 메서드에서 실행됩니다.
+ * </p>
+ * 
+ * 
+ */
 public class MqttNode extends InputOutputNode {
     Wire outputWire;
 
+    /**
+     * 입력 및 출력 와이어 개수를 기본값으로 설정합니다.
+     */
     public MqttNode() {
         this(1, 1);
     }
@@ -28,6 +40,11 @@ public class MqttNode extends InputOutputNode {
         outputWire = getOutputWire(0);
     }
 
+    /**
+     * MQTT 브로커와 연결하여 메시지를 수신하고, 해당 메시지를 출력 와이어로 전송하는 메서드입니다.
+     * 
+     * @throws InterruptedException
+     */
     @Override
     void process() {
         UUID cunnetId = UUID.randomUUID();
