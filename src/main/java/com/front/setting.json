@@ -58,32 +58,6 @@
         ]
     },
     {
-        "id": "24abd1ce76ec75c6",
-        "type": "switch",
-        "z": "3e6845589ff74cae",
-        "name": "Has deviceInfo",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "hask",
-                "v": "deviceInfo",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 320,
-        "y": 260,
-        "wires": [
-            [
-                "3bb32f29566bae7a",
-                "37c51f326ac92e1f"
-            ]
-        ]
-    },
-    {
         "id": "735fea81f9c43c5a",
         "type": "debug",
         "z": "3e6845589ff74cae",
@@ -118,26 +92,6 @@
             [
                 "735fea81f9c43c5a",
                 "ae5860d878b854b5"
-            ]
-        ]
-    },
-    {
-        "id": "ae5860d878b854b5",
-        "type": "split",
-        "z": "3e6845589ff74cae",
-        "name": "",
-        "splt": "\\n",
-        "spltType": "str",
-        "arraySplt": 1,
-        "arraySpltType": "len",
-        "stream": false,
-        "addname": "",
-        "x": 690,
-        "y": 380,
-        "wires": [
-            [
-                "7aa2bffdf7c81786",
-                "04254c4c46e121d2"
             ]
         ]
     },

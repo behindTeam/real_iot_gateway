@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "SettingNode",
+            "request": "launch",
+            "mainClass": "com.front.node.SettingNode",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
             "name": "MessageParsingTest",
             "request": "launch",
             "mainClass": "com.front.test.MessageParsingTest",
