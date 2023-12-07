@@ -17,7 +17,6 @@ import org.json.simple.parser.JSONParser;
 
 import com.front.message.JsonMessage;
 import com.front.message.Message;
-import com.front.message.StringMessage;
 import com.front.message.StringArrayMessage;
 
 import com.front.wire.Wire;
@@ -118,11 +117,9 @@ public class ProcessCommandLineNode extends InputOutputNode {
             }
         } catch (ParseException e) {
             helpFormatter.printHelp(usage, cliOptions);
-        } catch (IOException e) {
+        } catch (IOException | org.json.simple.parser.ParseException e) {
             e.printStackTrace();
-        } catch (org.json.simple.parser.ParseException e) {
-            e.printStackTrace();
-        }
+        } 
 
         return object;
     }
