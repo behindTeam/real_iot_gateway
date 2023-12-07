@@ -38,13 +38,13 @@ public class MqttInNode extends InputOutputNode {
                 output(mqttmessage);
             });
 
-            while (!Thread.currentThread().interrupted()) {
+            while (!Thread.interrupted()) {
                 Thread.sleep(100);
             }
 
             serverClient.disconnect();
         } catch (Exception e) {
-            System.err.println("");
+            Thread.currentThread().interrupt();
         }
     }
 

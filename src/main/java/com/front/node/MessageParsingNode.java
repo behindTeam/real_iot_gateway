@@ -1,6 +1,8 @@
 package com.front.node;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.json.simple.JSONObject;
@@ -15,8 +17,6 @@ public class MessageParsingNode extends InputOutputNode {
     Wire mqttWire;
     Message message;
 
-    String ApplicationName;
-    String[] sensor;
     JSONParser parser;
     JSONObject settings;
 
@@ -40,10 +40,9 @@ public class MessageParsingNode extends InputOutputNode {
     void process() {
         if ((getInputWire(1) != null) && (getInputWire(1).hasMessage())) {
             Message myMqttMessage = getInputWire(1).get();
-            if (myMqttMessage instanceof MyMqttMessage) {
-                if (Objects.nonNull(((MyMqttMessage) myMqttMessage).getPayload())) {
+            if (myMqttMessage instanceof MyMqttMessage &&  (Objects.nonNull(((MyMqttMessage) myMqttMessage).getPayload()))) {
                     messageParsing((MyMqttMessage) myMqttMessage);
-                }
+                
             }
         }
     }
@@ -60,7 +59,8 @@ public class MessageParsingNode extends InputOutputNode {
             JSONObject deviceInfo = (JSONObject) payload.get("deviceInfo");
             JSONObject object = (JSONObject) payload.get("object");
 
-            String commonTopic = "data";
+            StringBuilder sb = new StringBuilder();
+            sb.append("data");
 
             if (deviceInfo != null) {
                 Object tag = deviceInfo.get("tags");
@@ -68,16 +68,16 @@ public class MessageParsingNode extends InputOutputNode {
                     for (Object key : ((JSONObject) tag).keySet()) {
                         switch (key.toString()) {
                             case "site":
-                                commonTopic += "/s/" + ((JSONObject) tag).get("site");
+                                sb.append("/s/" + ((JSONObject) tag).get("site"));
                                 break;
                             case "name":
-                                commonTopic += "/n/" + ((JSONObject) tag).get("name");
+                                sb.append("/n/" + ((JSONObject) tag).get("name"));
                                 break;
                             case "branch":
-                                commonTopic += "/b/" + ((JSONObject) tag).get("branch");
+                                sb.append("/b/" + ((JSONObject) tag).get("branch"));
                                 break;
                             case "place":
-                                commonTopic += "/p/" + ((JSONObject) tag).get("place");
+                                sb.append("/p/" + ((JSONObject) tag).get("place"));
                                 break;
                             default:
                         }
@@ -89,21 +89,20 @@ public class MessageParsingNode extends InputOutputNode {
             long currentTime = new Date().getTime();
 
             if (object != null) {
-                for (Object sensorType : object.keySet()) {
+                for (Object sensorType : object.entrySet()) {
                     if (deviceInfo.get("applicationName").equals(settings.get("applicationName"))) {
                         String sensor = (String) settings.get("sensor");
                         if (settings.get("sensor") != null) {
                             String[] sensors = sensor.split(",");
-
                             if (sensor.contains(sensorType.toString()))
                                 for (String s : sensors) {
-                                    JSONObject sensorData = new JSONObject();
-                                    sensorData.put("time", currentTime);
-                                    sensorData.put("value", object.get(sensorType));
-
-                                    JSONObject newMessage = new JSONObject();
-                                    newMessage.put("payload", sensorData);
-                                    output(new MyMqttMessage(myMqttMessage.getSenderId(), commonTopic + "/e/" + sensorType.toString(), newMessage.toJSONString().getBytes()));
+                                    Map<String,Object> data = new HashMap<>();
+                                    Map<String,Object> sendMessage = new HashMap<>();
+                                    data.put("time", currentTime);
+                                    data.put("value", object.get(s));
+                                    sendMessage.put("payload", data);
+                                    JSONObject newMessage = new JSONObject(sendMessage);
+                                    output(new MyMqttMessage(myMqttMessage.getSenderId(), sb.toString() + "/e/" + s, newMessage.toJSONString().getBytes()));
                                 }
                         }
                     }

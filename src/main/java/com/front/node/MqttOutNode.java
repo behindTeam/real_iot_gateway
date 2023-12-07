@@ -1,6 +1,5 @@
 package com.front.node;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
@@ -25,22 +24,23 @@ public class MqttOutNode extends InputOutputNode{
 
     @Override
     void preprocess() {
+      //
     }
 
     @Override
     void process() {
         if ((getInputWire(0) != null) && (getInputWire(0).hasMessage())) {
             Message myMqttMessage = getInputWire(0).get();
-            if (myMqttMessage instanceof MyMqttMessage) {
-                if (Objects.nonNull(((MyMqttMessage) myMqttMessage).getPayload())) {
+            if (myMqttMessage instanceof MyMqttMessage &&  (Objects.nonNull(((MyMqttMessage) myMqttMessage).getPayload()))) {
                     publish((MyMqttMessage) myMqttMessage);
-                }
+                
             }
         }
     }
 
     @Override
     void postprocess() {
+        //
     }
 
     public void publish(MyMqttMessage inMessage){
@@ -53,7 +53,7 @@ public class MqttOutNode extends InputOutputNode{
             localClient.publish(inMessage.getTopic(), new MqttMessage(inMessage.getPayload()));
             localClient.disconnect();
         } catch (Exception e) {
-            System.err.println("");
+            //
         }
     }
 }

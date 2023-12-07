@@ -103,17 +103,15 @@ public class ProcessCommandLineNode extends InputOutputNode {
 
             }
 
-            if (c.hasOption("s")) {
-                if (c.getOptionValue("s") != null) {
+            if (c.hasOption("s") &&  (c.getOptionValue("s") != null)) {
                     String[] arr = c.getOptionValue("s").split(",");
                     object.put("sensor", Arrays.toString(arr));
-                }
+                
             }
 
-            if (c.hasOption("applicationName")) {
-                if (c.getOptionValue("applicationName") != null) {
+            if (c.hasOption("applicationName") &&  (c.getOptionValue("applicationName") != null)) {
                     object.put("applicationName", c.getOptionValue("applicationName"));
-                }
+                
             }
         } catch (ParseException e) {
             helpFormatter.printHelp(usage, cliOptions);

@@ -1,6 +1,7 @@
 package com.front.node;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -62,11 +63,10 @@ public abstract class Node {
     }
 
     public JSONObject getJson() {
-        JSONObject object = new JSONObject();
+        Map<String,Object> data = new HashMap<>();
+        data.put("id", id);
+        data.put("name", name);
 
-        object.put("id", id);
-        object.put("name", name);
-
-        return object;
+        return new JSONObject(data);
     }
 }
