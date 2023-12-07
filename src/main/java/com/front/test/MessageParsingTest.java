@@ -11,7 +11,7 @@ import com.front.wire.Wire;
 
 public class MessageParsingTest {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args){
 
         Message argMessage = new StringArrayMessage(args);
         Wire wire1 = new BufferedWire();
