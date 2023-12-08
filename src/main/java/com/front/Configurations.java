@@ -14,26 +14,29 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.front.node.InputOutputNode;
+import com.front.node.MessageParsingNode;
+import com.front.node.MqttInNode;
+import com.front.node.MqttOutNode;
 import com.front.node.Node;
 import com.front.wire.Wire;
 
+import org.eclipse.paho.client.mqttv3.IMqttClient;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.simple.JSONArray;
 
 public class Configurations {
     static int count = 0;
     private static Map<Node, JSONArray> map = new HashMap<>();
     private static Map<String, Node> nodeMap = new HashMap<>();
+    private static JSONArray jsonArray;
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, MqttException {
         JSONParser parser = new JSONParser(); // JSON 파일 읽기
         Reader reader = new FileReader("src/main/java/com/front/data.json");
 
-        String mqttInNodeName = "com.front.node.MqttInNode";
-        String messageParsingNodeName = "com.front.node.MessageParsingNode";
-        String mqttOutNodeName = "com.front.node.MqttOutNode";
-
         try {
-            JSONArray jsonArray = (JSONArray) parser.parse(reader);
+            jsonArray = (JSONArray) parser.parse(reader);
 
             JSONArray nodeList = (JSONArray) jsonArray.get(0);
             // JSONArray로부터 원하는 데이터 추출
@@ -43,14 +46,16 @@ public class Configurations {
 
                 switch (jsonObject.get("type").toString()) {
                     case "mqtt in":
-                        createNodeInstance(jsonObject, mqttInNodeName);
-
+                        createNodeInstance(jsonObject, MqttInNode.class.toString());
                         break;
                     case "messageParsing":
-                        createNodeInstance(jsonObject, messageParsingNodeName);
+                        createNodeInstance(jsonObject, MessageParsingNode.class.toString());
                         break;
                     case "mqtt out":
-                        createNodeInstance(jsonObject, mqttOutNodeName);
+                        createNodeInstance(jsonObject, MqttOutNode.class.toString());
+                        break;
+                    case "mqtt-broker":
+                        createClient((String) jsonObject.get("broker"), (String) jsonObject.get("id"));
                         break;
                     default:
                 }
@@ -59,13 +64,13 @@ public class Configurations {
             for (Node before : map.keySet()) {
                 JSONArray idList = map.get(before);
                 for (Object id : idList) {
-                    Node after = nodeMap.get((String) id);
+                    Node after = nodeMap.get(id);
                     connect(before, after);
                 }
             }
 
-            for (Node node : map.keySet()) {
-                ((InputOutputNode) node).start();
+            for (String id : nodeMap.keySet()) {
+                ((InputOutputNode) nodeMap.get(id)).start();
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -79,7 +84,7 @@ public class Configurations {
 
             Method setNameMethod = clazz.getMethod("setName", String.class);
 
-            setNameMethod.invoke(node, jsonObject.get("id")); // jsonObject.Id를
+            setNameMethod.invoke(node, jsonObject.get("id"));
 
             if (!((JSONArray) ((JSONArray) jsonObject.get("wires"))).isEmpty()) {
                 map.put(node, (JSONArray) ((JSONArray) jsonObject.get("wires")).get(0));
@@ -88,8 +93,12 @@ public class Configurations {
             nodeMap.put((jsonObject.get("id")).toString(), node);
 
             switch (nodeName) {
-                case "messageParsing":
-                    configureSettings
+                case "com.front.node.MessageParsingNode":
+                    Method configureSettingsMethod = clazz.getMethod("configureSettings", JSONObject.class);
+                    configureSettingsMethod.invoke(node, (JSONObject) ((JSONArray) (jsonArray.get(1))).get(0));
+                    break;
+                case "com.front.node.MqttInNode":
+                    
                     break;
 
                 default:
@@ -126,6 +135,12 @@ public class Configurations {
         }
 
     }
+
+    private static void createClient(String uri, String id) throws MqttException {
+        IMqttClient serverClient = new MqttClient(uri, id);
+        ClientList.getClientList().setClient(id, serverClient);
+    }
+
 }
 
 // BiConsumer<Node, Node> setConnect = {(input, output) -> new Wire wire = new

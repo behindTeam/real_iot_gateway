@@ -5,7 +5,6 @@ import java.util.Objects;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import com.front.message.JsonMessage;
 import com.front.message.Message;
 import com.front.message.MyMqttMessage;
 import com.front.wire.Wire;
@@ -29,15 +28,13 @@ public class MessageParsingNode extends InputOutputNode {
         parser = new JSONParser();
     }
 
-    public void configureSettings(JSONObject object) {
-        this.settings = object;
+    public void configureSettings(JSONObject settings) {
+        this.settings = settings;
     }
 
     @Override
     void preprocess() {
-        // settingWire = getInputWire(0);
-        // JsonMessage settingMessage = (JsonMessage) settingWire.get();
-        // settings = settingMessage.getPayload();
+        //
     }
 
     @Override

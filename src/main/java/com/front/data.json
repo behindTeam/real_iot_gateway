@@ -100,6 +100,7 @@
     ],
     [
         {
+            "host": "ems.nhnacademy.com",
             "deviceEui": "24e124128c067999",
             "applicationName": "NHNAcademyEMS",
             "sensor": "hummidity,temperature,co2"
