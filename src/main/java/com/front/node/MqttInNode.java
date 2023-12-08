@@ -1,6 +1,8 @@
 package com.front.node;
 
 import java.util.UUID;
+
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -91,5 +93,10 @@ public class MqttInNode extends InputOutputNode {
         preprocess();
         process();
         postprocess();
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 }

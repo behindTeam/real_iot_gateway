@@ -41,7 +41,7 @@ public class MessageParsingNode extends InputOutputNode {
      * 기본 생성자로, 입력 및 출력 와이어 개수를 기본값으로 설정
      */
     public MessageParsingNode() {
-        this(2, 1);
+        this(1, 1);
     }
 
     /**
@@ -55,14 +55,13 @@ public class MessageParsingNode extends InputOutputNode {
         parser = new JSONParser();
     }
 
-    /**
-     * 전처리 메서드로, 설정 메시지를 받아 설정 정보를 추출
-     */
+    public void configureSettings(JSONObject settings) {
+        this.settings = settings;
+    }
+
     @Override
     void preprocess() {
-        settingWire = getInputWire(0);
-        JsonMessage settingMessage = (JsonMessage) settingWire.get();
-        settings = settingMessage.getPayload();
+        //
     }
 
     /**
@@ -70,8 +69,8 @@ public class MessageParsingNode extends InputOutputNode {
      */
     @Override
     void process() {
-        if ((getInputWire(1) != null) && (getInputWire(1).hasMessage())) {
-            Message myMqttMessage = getInputWire(1).get();
+        if ((getInputWire(0) != null) && (getInputWire(0).hasMessage())) {
+            Message myMqttMessage = getInputWire(0).get();
             if (myMqttMessage instanceof MyMqttMessage) {
                 if (Objects.nonNull(((MyMqttMessage) myMqttMessage).getPayload())) {
                     messageParsing((MyMqttMessage) myMqttMessage);
