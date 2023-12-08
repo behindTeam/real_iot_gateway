@@ -1,5 +1,287 @@
-{
-    "deviceEui": "24e124128c067999",
-    "applicationName": "NHNAcademyEMS",
-    "sensor": "hummidity,temperature,co2"
-}
+[
+    [
+        {
+            "id": "8407c1952fb64004",
+            "type": "tab",
+            "label": "플로우 1",
+            "disabled": false,
+            "info": "",
+            "env": []
+        },
+        {
+            "id": "633167406fb103dc",
+            "type": "mqtt out",
+            "z": "8407c1952fb64004",
+            "name": "",
+            "topic": "",
+            "qos": "",
+            "retain": "",
+            "respTopic": "",
+            "contentType": "",
+            "userProps": "",
+            "correl": "",
+            "expiry": "",
+            "broker": "b9b401bbc7cf02cc",
+            "x": 1190,
+            "y": 300,
+            "wires": []
+        },
+        {
+            "id": "9fcb4f888f10f6e6",
+            "type": "mqtt in",
+            "z": "8407c1952fb64004",
+            "name": "",
+            "topic": "application/+/device/+/event/up",
+            "qos": "2",
+            "datatype": "auto-detect",
+            "broker": "f31021231918a3f7",
+            "nl": false,
+            "rap": true,
+            "rh": 0,
+            "inputs": 0,
+            "x": 250,
+            "y": 320,
+            "wires": [
+                [
+                    "42c9b9c4a209daa9"
+                ]
+            ]
+        },
+        {
+            "id": "8a7d5817521851b3",
+            "type": "debug",
+            "z": "8407c1952fb64004",
+            "name": "debug 1",
+            "active": false,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "payload",
+            "targetType": "msg",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 740,
+            "y": 160,
+            "wires": []
+        },
+        {
+            "id": "42c9b9c4a209daa9",
+            "type": "debug",
+            "z": "8407c1952fb64004",
+            "name": "debug 2",
+            "active": false,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "payload",
+            "targetType": "msg",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 520,
+            "y": 160,
+            "wires": []
+        },
+        {
+            "id": "d6ee16b31479481b",
+            "type": "function",
+            "z": "8407c1952fb64004",
+            "name": "function 2",
+            "func": "if ((msg.payload.deviceInfo != undefined) && (msg.payload.deviceInfo.tags.branch != undefined) && (msg.payload.deviceInfo.tags.branch != undefined)) {\n    msg.branch = msg.payload.deviceInfo.tags.branch\n    msg.place = msg.payload.deviceInfo.tags.place\n    return msg\n}\nreturn;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 540,
+            "y": 300,
+            "wires": [
+                [
+                    "99800fbe84a2ef81",
+                    "8a7d5817521851b3"
+                ]
+            ]
+        },
+        {
+            "id": "99800fbe84a2ef81",
+            "type": "function",
+            "z": "8407c1952fb64004",
+            "name": "function 3",
+            "func": "var temperature = msg.payload.object.temperature\nvar humidity = msg.payload.object.humidity\nvar batteryLevel = msg.payload.object.batteryLevel\nvar co2 = msg.payload.object.co2\n\nmsg.topic = \"data/b/\" + msg.branch + \"/p/\" + msg.place\nmsg.payload = {'temperature': temperature, 'humidity': humidity, 'batteryLevel': batteryLevel, \"co2\": co2}\nreturn msg",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 740,
+            "y": 300,
+            "wires": [
+                [
+                    "5519a620786ea24c",
+                    "6224c53d15a35ab6",
+                    "5fc4e667e9883eda",
+                    "d8c64282150eb264",
+                    "7bf7aacfd683cca6"
+                ]
+            ]
+        },
+        {
+            "id": "5519a620786ea24c",
+            "type": "function",
+            "z": "8407c1952fb64004",
+            "name": "temperature",
+            "func": "var data= new Date();\n\nif (msg.payload.temperature != undefined) {\n    msg.topic += \"/e/temperature\";\n    msg.payload = {\n        time:data.getTime(),\n        value : msg.payload.temperature\n    }\n    return msg;\n}\nreturn ;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 950,
+            "y": 260,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "6224c53d15a35ab6",
+            "type": "function",
+            "z": "8407c1952fb64004",
+            "name": "humidity",
+            "func": "var data= new Date();\n\nif (msg.payload.humidity != undefined) {\n    msg.topic += \"/e/humidity\";\n    msg.payload = {\n        time:data.getTime(),\n        value : msg.payload.humidity\n    }\n    return msg;\n}\nreturn ;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 940,
+            "y": 340,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "5fc4e667e9883eda",
+            "type": "function",
+            "z": "8407c1952fb64004",
+            "name": "batteryLevel",
+            "func": "var data = new Date();\n\nif (msg.payload.batteryLevel != undefined) {\n    msg.topic += \"/e/batteryLevel\";\n    msg.payload = {\n        time: data.getTime(),\n        value: msg.payload.batteryLevel\n    }\n    return msg;\n}\nreturn;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 950,
+            "y": 420,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "d8c64282150eb264",
+            "type": "function",
+            "z": "8407c1952fb64004",
+            "name": "co2",
+            "func": "var data = new Date();\n\nif (msg.payload.co2 != undefined) {\n    msg.topic += \"/e/co2\";\n    msg.payload = {\n        time: data.getTime(),\n        value: msg.payload.co2\n    }\n    return msg;\n}\nreturn;",
+            "outputs": 1,
+            "timeout": 0,
+            "noerr": 0,
+            "initialize": "",
+            "finalize": "",
+            "libs": [],
+            "x": 930,
+            "y": 500,
+            "wires": [
+                []
+            ]
+        },
+        {
+            "id": "7bf7aacfd683cca6",
+            "type": "debug",
+            "z": "8407c1952fb64004",
+            "name": "debug 3",
+            "active": false,
+            "tosidebar": true,
+            "console": false,
+            "tostatus": false,
+            "complete": "false",
+            "statusVal": "",
+            "statusType": "auto",
+            "x": 940,
+            "y": 160,
+            "wires": []
+        },
+        {
+            "id": "b9b401bbc7cf02cc",
+            "type": "mqtt-broker",
+            "name": "mosquitto",
+            "broker": "mosquitto",
+            "port": "1883",
+            "clientid": "",
+            "autoConnect": true,
+            "usetls": false,
+            "protocolVersion": "4",
+            "keepalive": "60",
+            "cleansession": true,
+            "autoUnsubscribe": true,
+            "birthTopic": "",
+            "birthQos": "0",
+            "birthRetain": "false",
+            "birthPayload": "",
+            "birthMsg": {},
+            "closeTopic": "",
+            "closeQos": "0",
+            "closeRetain": "false",
+            "closePayload": "",
+            "closeMsg": {},
+            "willTopic": "",
+            "willQos": "0",
+            "willRetain": "false",
+            "willPayload": "",
+            "willMsg": {},
+            "userProps": "",
+            "sessionExpiry": ""
+        },
+        {
+            "id": "f31021231918a3f7",
+            "type": "mqtt-broker",
+            "name": "NHN",
+            "broker": "ems.nhnacademy.com",
+            "port": "1883",
+            "clientid": "",
+            "autoConnect": true,
+            "usetls": false,
+            "protocolVersion": "4",
+            "keepalive": "60",
+            "cleansession": true,
+            "autoUnsubscribe": true,
+            "birthTopic": "",
+            "birthQos": "0",
+            "birthRetain": "false",
+            "birthPayload": "",
+            "birthMsg": {},
+            "closeTopic": "",
+            "closeQos": "0",
+            "closeRetain": "false",
+            "closePayload": "",
+            "closeMsg": {},
+            "willTopic": "",
+            "willQos": "0",
+            "willRetain": "false",
+            "willPayload": "",
+            "willMsg": {},
+            "userProps": "",
+            "sessionExpiry": ""
+        }
+    ],
+    [
+        {
+            "deviceEui": "24e124128c067999",
+            "applicationName": "NHNAcademyEMS",
+            "sensor": "hummidity,temperature,co2"
+        }
+    ]
+]
