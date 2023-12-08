@@ -21,7 +21,7 @@ public class MessageParsingNode extends InputOutputNode {
     JSONObject settings;
 
     public MessageParsingNode() {
-        this(2, 1);
+        this(1, 1);
     }
 
     public MessageParsingNode(int inCount, int outCount) {
@@ -29,17 +29,21 @@ public class MessageParsingNode extends InputOutputNode {
         parser = new JSONParser();
     }
 
+    public void configureSettings(JSONObject object) {
+        this.settings = object;
+    }
+
     @Override
     void preprocess() {
-        settingWire = getInputWire(0);
-        JsonMessage settingMessage = (JsonMessage) settingWire.get();
-        settings = settingMessage.getPayload();
+        // settingWire = getInputWire(0);
+        // JsonMessage settingMessage = (JsonMessage) settingWire.get();
+        // settings = settingMessage.getPayload();
     }
 
     @Override
     void process() {
-        if ((getInputWire(1) != null) && (getInputWire(1).hasMessage())) {
-            Message myMqttMessage = getInputWire(1).get();
+        if ((getInputWire(0) != null) && (getInputWire(0).hasMessage())) {
+            Message myMqttMessage = getInputWire(0).get();
             if (myMqttMessage instanceof MyMqttMessage) {
                 if (Objects.nonNull(((MyMqttMessage) myMqttMessage).getPayload())) {
                     messageParsing((MyMqttMessage) myMqttMessage);
@@ -103,7 +107,9 @@ public class MessageParsingNode extends InputOutputNode {
 
                                     JSONObject newMessage = new JSONObject();
                                     newMessage.put("payload", sensorData);
-                                    output(new MyMqttMessage(myMqttMessage.getSenderId(), commonTopic + "/e/" + sensorType.toString(), newMessage.toJSONString().getBytes()));
+                                    output(new MyMqttMessage(myMqttMessage.getSenderId(),
+                                            commonTopic + "/e/" + sensorType.toString(),
+                                            newMessage.toJSONString().getBytes()));
                                 }
                         }
                     }
