@@ -9,7 +9,8 @@
             "name": "Configurations",
             "request": "launch",
             "mainClass": "com.front.Configurations",
-            "projectName": "iot_gateway"
+            "projectName": "iot_gateway",
+            "args": "-c -s humidity,temperature,co2"
         },
         {
             "type": "java",

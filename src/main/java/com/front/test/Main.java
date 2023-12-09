@@ -1,4 +1,4 @@
-package com.front;
+package com.front.test;
 
 import com.front.message.JsonMessage;
 import com.front.message.Message;
