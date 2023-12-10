@@ -11,6 +11,7 @@ import com.front.wire.Wire;
 
 public class MqttInNode extends InputOutputNode {
     Wire outputWire;
+    IMqttClient client;
 
     public MqttInNode() {
         this(1, 1);
@@ -18,6 +19,10 @@ public class MqttInNode extends InputOutputNode {
 
     public MqttInNode(int inCount, int outCount) {
         super(inCount, outCount);
+    }
+
+    public void setClient(IMqttClient client) {
+        this.client = client;
     }
 
     @Override
@@ -28,7 +33,12 @@ public class MqttInNode extends InputOutputNode {
     @Override
     void process() {
         UUID cunnetId = UUID.randomUUID();
-        try (IMqttClient serverClient = new MqttClient("tcp://ems.nhnacademy.com", cunnetId.toString())) {
+        try (IMqttClient serverClient = client;
+        // IMqttClient serverClient = new MqttClient("tcp://ems.nhnacademy.com",
+        // cunnetId.toString());
+        ) {
+            // UUID cunnetId = UUID.fromString(serverClient.getClientId());
+
             MqttConnectOptions options = new MqttConnectOptions();
             options.setAutomaticReconnect(true);
             options.setCleanSession(true);

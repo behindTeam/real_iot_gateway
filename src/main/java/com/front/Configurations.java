@@ -98,7 +98,7 @@ public class Configurations {
                     configureSettingsMethod.invoke(node, (JSONObject) ((JSONArray) (jsonArray.get(1))).get(0));
                     break;
                 case "com.front.node.MqttInNode":
-                    
+
                     break;
 
                 default:
@@ -140,8 +140,6 @@ public class Configurations {
         IMqttClient serverClient = new MqttClient(uri, id);
         ClientList.getClientList().setClient(id, serverClient);
     }
-
-    
 
 }
 
