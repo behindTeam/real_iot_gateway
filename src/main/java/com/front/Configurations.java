@@ -163,6 +163,7 @@ public class Configurations {
     }
 
     // 클라이언트를 생성해주는 메서드
+    // Todo: port번호도 가져와야 함
     private static void createClient(String uri, String id) throws MqttException {
         if (uri.equals("mosquitto")) {
             uri = "localhost";

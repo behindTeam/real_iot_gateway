@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "ModbusTest",
+            "request": "launch",
+            "mainClass": "com.front.test.ModbusTest",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
+            "name": "Configurations",
+            "request": "launch",
+            "mainClass": "com.front.Configurations",
+            "projectName": "iot_gateway"
+        },
+        {
+            "type": "java",
             "name": "MessageParsingTest",
             "request": "launch",
             "mainClass": "com.front.test.MessageParsingTest",
