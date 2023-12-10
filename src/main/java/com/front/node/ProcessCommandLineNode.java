@@ -17,7 +17,6 @@ import org.json.simple.parser.JSONParser;
 
 import com.front.message.JsonMessage;
 import com.front.message.Message;
-import com.front.message.StringMessage;
 import com.front.message.StringArrayMessage;
 
 import com.front.wire.Wire;
@@ -71,7 +70,7 @@ public class ProcessCommandLineNode extends InputOutputNode {
 
     public JSONObject processCommandLine(String[] args) {
         String usage = "scurl [option] url";
-        String path = "src/main/java/com/front/data.json";
+        String path = "src/main/java/com/front/resources/settings.json";
 
         Options cliOptions = new Options();
         cliOptions.addOption(new Option("applicationName", "an", true,
