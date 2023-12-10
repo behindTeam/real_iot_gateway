@@ -6,7 +6,10 @@ import java.util.UUID;
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
+
 import com.front.message.Message;
 import com.front.message.MyMqttMessage;
 import com.front.wire.Wire;
@@ -23,6 +26,7 @@ import com.front.wire.Wire;
 public class MqttOutNode extends InputOutputNode {
     Wire inputWire;
     UUID cunnetId;
+    IMqttClient client;
 
     /**
      * {@code MqttOutNode} 클래스의 기본 생성자입니다.
@@ -46,6 +50,10 @@ public class MqttOutNode extends InputOutputNode {
     /**
      * 전처리 메서드 (구현 x)
      */
+    public void setClient(IMqttClient client) {
+        this.client = client;
+    }
+
     @Override
     void preprocess() {
     }
@@ -72,22 +80,21 @@ public class MqttOutNode extends InputOutputNode {
     void postprocess() {
     }
 
-    /**
-     * 입력 MyMqttMessage를 사용하여 MQTT 브로커에 메시지를 발행하는 메서드입니다.
-     *
-     * @param inMessage 발행할 MyMqttMessage
-     */
     public void publish(MyMqttMessage inMessage) {
         cunnetId = UUID.randomUUID();
-        try (IMqttClient localClient = new MqttClient("tcp://localhost", cunnetId.toString())) {
+        // 객체를 재사용하기 위해 try with resources탈출
+        try {
+            IMqttClient localClient = client;
             MqttConnectOptions options = new MqttConnectOptions();
             options.setAutomaticReconnect(true);
             options.setCleanSession(true);
             localClient.connect(options);
             localClient.publish(inMessage.getTopic(), new MqttMessage(inMessage.getPayload()));
             localClient.disconnect();
-        } catch (Exception e) {
-            System.err.println("");
+        } catch (MqttPersistenceException e) {
+            e.printStackTrace();
+        } catch (MqttException e) {
+            e.printStackTrace();
         }
     }
 }

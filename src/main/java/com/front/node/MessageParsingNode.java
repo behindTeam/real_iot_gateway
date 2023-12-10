@@ -5,7 +5,6 @@ import java.util.Objects;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
 import com.front.message.JsonMessage;
 import com.front.message.Message;
 import com.front.message.MyMqttMessage;
@@ -41,7 +40,7 @@ public class MessageParsingNode extends InputOutputNode {
      * 기본 생성자로, 입력 및 출력 와이어 개수를 기본값으로 설정
      */
     public MessageParsingNode() {
-        this(1, 1);
+        this(2, 1);
     }
 
     /**
@@ -55,13 +54,11 @@ public class MessageParsingNode extends InputOutputNode {
         parser = new JSONParser();
     }
 
-    public void configureSettings(JSONObject settings) {
-        this.settings = settings;
-    }
-
     @Override
     void preprocess() {
-        //
+        settingWire = getInputWire(0);
+        JsonMessage settingMessage = (JsonMessage) settingWire.get();
+        settings = settingMessage.getPayload();
     }
 
     /**
@@ -69,8 +66,8 @@ public class MessageParsingNode extends InputOutputNode {
      */
     @Override
     void process() {
-        if ((getInputWire(0) != null) && (getInputWire(0).hasMessage())) {
-            Message myMqttMessage = getInputWire(0).get();
+        if ((getInputWire(1) != null) && (getInputWire(1).hasMessage())) {
+            Message myMqttMessage = getInputWire(1).get();
             if (myMqttMessage instanceof MyMqttMessage) {
                 if (Objects.nonNull(((MyMqttMessage) myMqttMessage).getPayload())) {
                     messageParsing((MyMqttMessage) myMqttMessage);
