@@ -33,7 +33,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.json.simple.JSONArray;
 
 //세팅을 적용시키는 클래스, main문을 포함한다.
-//JSON 파일에서 구성을 읽어와 해당 구성에 기반하여 다양한 유형의 노드 인스턴스를 동적으로 생성하고, 이러한 노드 간의 연결을 설정하며, 특정 노드에 대한 MQTT 클라이언트를 설정하는 역할을 합니다.
 public class Configurations {
     static int count = 0;
     private static Map<Node, JSONArray> map = new HashMap<>();
@@ -166,7 +165,7 @@ public class Configurations {
     // 클라이언트를 생성해주는 메서드
     private static void createClient(String uri, String id) throws MqttException {
         if (uri.equals("mosquitto")) {
-            uri = "mosquitto:1883";
+            uri = "localhost";
         }
         IMqttClient serverClient = new MqttClient("tcp://" + uri, id);
         ClientList.getClientList().addClient(id, serverClient);
@@ -183,7 +182,7 @@ public class Configurations {
     // string ars[]의 내용을 적용시켜주는 메서드
     public static JSONObject processCommandLine(String[] args) throws org.json.simple.parser.ParseException {
         String usage = "scurl [option] url";
-        String path = "src/main/java/com/front/settings.json";
+        String path = "src/main/java/com/front/resources/settings.json";
 
         Options cliOptions = new Options();
         cliOptions.addOption(new Option("applicationName", "an", true,

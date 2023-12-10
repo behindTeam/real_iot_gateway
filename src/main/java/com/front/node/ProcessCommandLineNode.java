@@ -70,7 +70,7 @@ public class ProcessCommandLineNode extends InputOutputNode {
 
     public JSONObject processCommandLine(String[] args) {
         String usage = "scurl [option] url";
-        String path = "src/main/java/com/front/settings.json";
+        String path = "src/main/java/com/front/resources/settings.json";
 
         Options cliOptions = new Options();
         cliOptions.addOption(new Option("applicationName", "an", true,
