@@ -22,25 +22,21 @@ import com.front.wire.Wire;
  * 
  */
 public class MessageParsingNode extends InputOutputNode {
-
     Wire settingWire;
-
     Wire mqttWire;
     Message message;
 
     String applicationName;
 
     String[] sensor;
-
     JSONParser parser;
-
     JSONObject settings;
 
     /**
      * 기본 생성자로, 입력 및 출력 와이어 개수를 기본값으로 설정
      */
     public MessageParsingNode() {
-        this(2, 1);
+        this(1, 1);
     }
 
     /**
@@ -54,11 +50,13 @@ public class MessageParsingNode extends InputOutputNode {
         parser = new JSONParser();
     }
 
+    public void configureSettings(JSONObject settings) {
+        this.settings = settings;
+    }
+
     @Override
     void preprocess() {
-        settingWire = getInputWire(0);
-        JsonMessage settingMessage = (JsonMessage) settingWire.get();
-        settings = settingMessage.getPayload();
+        //
     }
 
     /**
@@ -66,8 +64,8 @@ public class MessageParsingNode extends InputOutputNode {
      */
     @Override
     void process() {
-        if ((getInputWire(1) != null) && (getInputWire(1).hasMessage())) {
-            Message myMqttMessage = getInputWire(1).get();
+        if ((getInputWire(0) != null) && (getInputWire(0).hasMessage())) {
+            Message myMqttMessage = getInputWire(0).get();
             if (myMqttMessage instanceof MyMqttMessage) {
                 if (Objects.nonNull(((MyMqttMessage) myMqttMessage).getPayload())) {
                     messageParsing((MyMqttMessage) myMqttMessage);
@@ -81,6 +79,7 @@ public class MessageParsingNode extends InputOutputNode {
      */
     @Override
     void postprocess() {
+        //
     }
 
     /**
@@ -118,6 +117,7 @@ public class MessageParsingNode extends InputOutputNode {
                         }
                     }
                 }
+
             }
 
             long currentTime = new Date().getTime();
